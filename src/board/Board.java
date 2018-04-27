@@ -105,5 +105,14 @@ public class Board {
         this.opponentId = id;
     }
     
+    //modified
+    public int getMyId() {
+    	return this.myId;
+    }
+    
+    public int getOpponentId() {
+    	return this.opponentId;
+    }
+    
     //public Board clone()
 }
