@@ -104,4 +104,6 @@ public class Board {
     public void setOpponentId(int id) {
         this.opponentId = id;
     }
+    
+    //public Board clone()
 }

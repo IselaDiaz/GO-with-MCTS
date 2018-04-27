@@ -22,6 +22,7 @@ package bot;
 import java.util.HashMap;
 
 import board.Board;
+import io.riddles.go.game.state.GoPlayerState;
 import player.Player;
 
 /**
@@ -96,6 +97,7 @@ public class BotState {
     }
 
     public void setMyName(String myName) {
+        this.myName = myName; {
         this.myName = myName;
     }
 
@@ -109,5 +111,24 @@ public class BotState {
 
     public Board getBoard() {
         return this.board;
+    }
+    //modified//
+    public void setBoard(Board board) {
+    	this.board=board;
+    }
+    
+    public BotState clone() {
+        BotState Clone = new BotState();
+        
+        Clone.setMaxTimebank(this.MAX_TIMEBANK);
+        Clone.setTimePerMove(this.TIME_PER_MOVE);
+        Clone.setMaxRounds(this.MAX_ROUNDS);
+        Clone.setRoundNumber(this.roundNumber);
+        Clone.setTimebank(this.timebank);
+        Clone.setMyName(this.myName);
+        Clone.setPlayers(this.players);
+        Clone.setBoard(this.board);
+        
+        return Clone;
     }
 }
