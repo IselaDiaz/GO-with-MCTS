@@ -1,4 +1,4 @@
-package bot;
+/*package bot;
 import java.util.ArrayList;
 import java.util.List;
 import board.Board
@@ -95,3 +95,4 @@ public class State {
         }
     }
 }
+*/

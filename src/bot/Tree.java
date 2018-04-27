@@ -1,4 +1,4 @@
-package bot;
+/*package bot;
 
 public class Tree {
         Node root;
@@ -25,3 +25,4 @@ public class Tree {
 
     }
 
+*/
