@@ -34,7 +34,7 @@ import move.Move;
  */
 
 public class BotStarter {
-    
+
     private Random random = new Random();
     /**
      * Makes a turn. Edit this method to make your bot smarter.
@@ -45,7 +45,7 @@ public class BotStarter {
     public Move doMove(BotState state) {
     	ArrayList<Move> availableMoves = state.getBoard().getAvailableMoves();
     	int moveCount = availableMoves.size();
-    	
+
     	if (moveCount <= 0) {
     		return null;
 		}
