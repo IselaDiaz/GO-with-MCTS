@@ -1,7 +1,7 @@
-/*package bot;
+package bot;
 import java.util.ArrayList;
 import java.util.List;
-import board.Board
+import board.Board;
 
 
 public class State {
@@ -94,5 +94,4 @@ public class State {
             this.playerNo = 3 - this.playerNo;
         }
     }
-}
-*/
+

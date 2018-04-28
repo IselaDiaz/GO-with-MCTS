@@ -10,6 +10,7 @@ import java.util.Random;
 public class TreeNode {
 
         Random r = new Random();
+
         ArrayList<Move> availableMoves = BotState.getBoard().getAvailableMoves();
         int moveCount = availableMoves.size();
         int nActions = moveCount ;
@@ -19,6 +20,7 @@ public class TreeNode {
         double nVisits, totValue;
 
         public void selectAction() {
+
             List<TreeNode> visited = new LinkedList<TreeNode>();
             TreeNode cur = this;
             visited.add(this);
@@ -27,21 +29,24 @@ public class TreeNode {
                 // System.out.println("Adding: " + cur);
                 visited.add(cur);
             }
+
             cur.expand();
+
             TreeNode newNode = cur.select();
+
             visited.add(newNode);
             double value = rollOut(newNode);
             for (TreeNode node : visited) {
                 // would need extra logic for n-player game
                 // System.out.println(node);
-                node.updateStats(value);
+                node.updateStatsMyplayer(value);
             }
         }
 
         public void expand() {
             children = new TreeNode[nActions];
             for (int i=0; i<nActions; i++) {
-                children[i] = new TreeNode();
+                children[i] = BotState.getNextState(cur[i]);
             }
         }
 
@@ -75,7 +80,7 @@ public class TreeNode {
             return r.nextInt(2);
         }
 
-        public void updateStats(double value) {
+        public void updateStatsMyplayer(double value) {
             nVisits++;
             totValue += value;
         }

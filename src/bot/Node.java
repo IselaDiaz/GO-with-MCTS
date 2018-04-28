@@ -1,4 +1,4 @@
-/*package bot;
+package bot;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,23 +7,21 @@ import bot.Tree;
 
 public class Node {
 
-
-    public class Node {
-        State state;
+        BotState state;
         Node parent;
         List<Node> childArray;
 
         public Node() {
-            this.state = new State();
+            this.state = new BotState();
             childArray = new ArrayList<>();
         }
 
-        public Node(State state) {
+        public Node(BotState state) {
             this.state = state;
             childArray = new ArrayList<>();
         }
 
-        public Node(State state, Node parent, List<Node> childArray) {
+        public Node(BotState state, Node parent, List<Node> childArray) {
             this.state = state;
             this.parent = parent;
             this.childArray = childArray;
@@ -31,7 +29,7 @@ public class Node {
 
         public Node(Node node) {
             this.childArray = new ArrayList<>();
-            this.state = new State(node.getState());
+            this.state = new BotState(node.getState());
             if (node.getParent() != null)
                 this.parent = node.getParent();
             List<Node> childArray = node.getChildArray();
@@ -40,11 +38,11 @@ public class Node {
             }
         }
 
-        public State getState() {
+        public BotState getState() {
             return state;
         }
 
-        public void setState(State state) {
+        public void setState(BotState state) {
             this.state = state;
         }
 
@@ -78,4 +76,3 @@ public class Node {
 
     }
 }
-*/
