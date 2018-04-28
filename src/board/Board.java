@@ -21,7 +21,7 @@ package board;
 
 import java.util.ArrayList;
 
-import io.riddles.go.game.board.Point;
+import move.Point;
 import move.Move;
 
 /**
@@ -35,7 +35,7 @@ import move.Move;
  */
 
 public class Board {
-    private final String EMPTY_FIELD = ".";
+    public static final String EMPTY_FIELD = ".";
 
     private int myId;
     private int opponentId;
@@ -118,5 +118,17 @@ public class Board {
     //public Board clone()
     public void setFieldAt(Move c, String f) {
         field[c.x][c.y] = f;
+    }
+    
+    public String getFieldAt(Point c) {
+        return field[c.x][c.y];
+    }
+    
+    public void initializeFromArray(String[][] array) {
+        for (int y = 0; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+                field[x][y] = array[x][y];
+            }
+        }
     }
 }
