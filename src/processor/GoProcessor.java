@@ -20,21 +20,13 @@
 package processor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
 import bot.BotState;
 import goMove.GoMove;
 import goMove.GoMoveDeserializer;
-import io.riddles.go.game.state.GoPlayerState;
-import io.riddles.go.game.move.*;
-import io.riddles.go.game.player.GoPlayer;
-import io.riddles.go.game.state.GoState;
-import io.riddles.javainterface.engine.AbstractEngine;
-import io.riddles.javainterface.game.player.PlayerProvider;
-import io.riddles.javainterface.game.processor.PlayerResponseProcessor;
-import io.riddles.javainterface.game.state.AbstractPlayerState;
-import io.riddles.javainterface.io.PlayerResponse;
 import node.Node;
 import player.Player;
 
@@ -53,7 +45,7 @@ public class GoProcessor{
         this.logic = new GoLogic();
     }
 
-    public BotState createNextStateFromMove(Node stateNode, String input) {
+    public Node createNextStateFromMove(Node stateNode, String input) {
 
         /* Clone playerStates for next State */
         //ArrayList<GoPlayerState> nextPlayerStates = clonePlayerStates(state.getPlayerStates());
@@ -64,7 +56,8 @@ public class GoProcessor{
         //GoPlayerState playerState = getActivePlayerState(nextPlayerStates, input.getPlayerId());
         //playerState.setPlayerId(input.getPlayerId());
 
-    	Node nextStateNode=new Node(stateNode.getState(),stateNode);
+    	//parent updated here and also changed stuff for new player
+    	Node nextStateNode=new Node(stateNode.getState().clone(),stateNode);//parent updated here
     	
         // parse the response
         GoMoveDeserializer deserializer = new GoMoveDeserializer();
@@ -93,84 +86,63 @@ public class GoProcessor{
         Iterator<String> iterator = playersString.iterator();
         while(iterator.hasNext()) {
         	Player player=nextState.getPlayers().get(iterator.next());
-        	if(player.getName().equals(nextState.getMyName()))
-        		score=logic.calculateScore(nextState.getBoard(), nextState.getBoard().getMyId());
-        	else
-        		score=logic.calculateScore(nextState.getBoard(), nextState.getBoard().getOpponentId());
+        	score=logic.calculateScore(nextState.getBoard(), getIdFromPlayer(player,nextState));//add komi?
         	player.setPoints(score);
         }
 
-        return nextState;
+        //change rounds?
+        updateRoundNumber(nextState);
+        
+        //alternating? more stuff to change
+        nextStateNode.getState().changePlayer();
+        
+        return nextStateNode;
     }
 
-    private GoPlayerState getActivePlayerState(ArrayList<GoPlayerState> playerStates, int id) {
-        for (GoPlayerState playerState : playerStates) {
-            if (playerState.getPlayerId() == id) { return playerState; }
-        }
-        return null;
+    
+    public void updateRoundNumber(BotState state) {
+    	if(state.getBoard().getMyId()!=0)
+    		state.setRoundNumber(state.getRoundNumber()+1);
+    }
+    
+    
+    private int getIdFromPlayer(Player player, BotState state) {
+    	if(player.getName().equals(state.getMyName()))
+    		return state.getBoard().getMyId();
+    	else
+    		return state.getBoard().getOpponentId();
     }
 
-    private ArrayList<GoPlayerState> clonePlayerStates(ArrayList<GoPlayerState> playerStates) {
-        ArrayList<GoPlayerState> nextPlayerStates = new ArrayList<>();
-        for (GoPlayerState playerState : playerStates) {
-            GoPlayerState nextPlayerState = playerState.clone();
-            nextPlayerStates.add(nextPlayerState);
-        }
-        return nextPlayerStates;
-    }
 
-    @Override
-    public void sendUpdates(GoState state, GoPlayer player) {
-        player.sendUpdate("round", state.getRoundNumber());
-        player.sendUpdate("field", state.getBoard().toString());
-
-        for (GoPlayerState playerState : state.getPlayerStates()) {
-            GoPlayer otherPlayer = this.playerProvider.getPlayerById(playerState.getPlayerId());
-            player.sendUpdate("points", otherPlayer, "" + playerState.getScore());
-        }
-    }
-
-    @Override
-    public boolean hasGameEnded(GoState state) {
-        if (state.getRoundNumber() >= AbstractEngine.configuration.getInt("maxRounds")) return true;
-        return state.isDoublePass() || logic.isBoardFull(state.getBoard()) || logic.detectKo(state);
+    public boolean hasGameEnded(Node stateNode) {
+    	BotState state=stateNode.getState();
+        if (state.getRoundNumber() >= state.getMaxRounds()) return true;
+        return logic.isBoardFull(state.getBoard()) || logic.detectKo(stateNode);
     }
 
     /* Returns winner playerId, or null if there's no winner. */
-    @Override
-    public Integer getWinnerId(GoState state) {
-        ArrayList<GoPlayerState> playerStates = state.getPlayerStates();
+    public Integer getWinnerId(BotState state) {
+        HashMap<String,Player> players = state.getPlayers();
+        double scorePlayer0=0;
+        double scorePlayer1=0;
         Integer winnerId = null;
-        double scorePlayer0 = logic.calculateScore(state.getBoard(), playerStates.get(0).getPlayerId());
-        double scorePlayer1 = logic.calculateScore(state.getBoard(), playerStates.get(1).getPlayerId());
-        //System.out.println("scorePlayer0 " +scorePlayer0 + " scorePlayer1 " + scorePlayer1);
-
-        if (logic.isBoardFull(state.getBoard())) {
-
-            if (scorePlayer0 > scorePlayer1) winnerId = playerStates.get(0).getPlayerId();
-            if (scorePlayer1 > scorePlayer0) winnerId = playerStates.get(1).getPlayerId();
-            return winnerId;
+        
+        
+        Set<String> playersString=players.keySet();
+        
+        Iterator<String> iterator = playersString.iterator();
+        while(iterator.hasNext()) {
+        	Player player=players.get(iterator.next());
+        	int playerId=getIdFromPlayer(player,state);
+			if(playerId==0)
+        		scorePlayer0 = player.getPoints();
+        	else
+        		scorePlayer1 = player.getPoints();
         }
 
-        if (state.isDoublePass()) {
-
-            if (scorePlayer0 > scorePlayer1) winnerId = playerStates.get(0).getPlayerId();
-            if (scorePlayer1 > scorePlayer0) winnerId = playerStates.get(1).getPlayerId();
-            return winnerId;
-
-        }
-        if (scorePlayer0 > scorePlayer1) return playerStates.get(0).getPlayerId();
-        if (scorePlayer1 > scorePlayer0) return playerStates.get(1).getPlayerId();
-        return null;
-    }
-
-    @Override
-    public double getScore(GoState state) {
-        return state.getRoundNumber();
-    }
-
-    @Override
-    public Enum getActionType(GoState goState, AbstractPlayerState playerState) {
-        return ActionType.MOVE;
+        if (scorePlayer0 > scorePlayer1) winnerId = 0;
+        if (scorePlayer1 > scorePlayer0) winnerId = 1;
+        
+        return winnerId;
     }
 }

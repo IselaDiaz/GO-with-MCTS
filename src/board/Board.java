@@ -21,6 +21,7 @@ package board;
 
 import java.util.ArrayList;
 
+import bot.BotState;
 import move.Point;
 import move.Move;
 
@@ -115,6 +116,10 @@ public class Board {
     	return this.opponentId;
     }
     
+    public void setField(String[][] field) {
+    	this.field=field;
+    }
+    
     //public Board clone()
     public void setFieldAt(Move c, String f) {
         field[c.x][c.y] = f;
@@ -131,4 +136,18 @@ public class Board {
             }
         }
     }
+    
+    //cloning board
+    public Board clone() {
+        Board Clone = new Board();
+        
+        Clone.setMyId(this.myId);
+        Clone.setOpponentId(this.opponentId);
+        Clone.setHeight(this.height);
+        Clone.setWidth(this.width);
+        Clone.setField(this.field);
+
+        return Clone;
+    }
+    
 }

@@ -65,7 +65,7 @@ public class GoLogic {
         int stonesTaken = checkCaptures(board, playerId);
         move.setStonesTaken(stonesTaken);
 
-        if (!checkSuicideRule(board, point, String.valueOf(playerId))) { /* Check Suicide Rule */
+        if (checkSuicideRule(board, point, String.valueOf(playerId))) { /* Check Suicide Rule */
             board.initializeFromArray(originalBoard);
         }
     }
