@@ -17,10 +17,13 @@
  *     file that was distributed with this source code.
  */
 
-package io.riddles.go.game.processor;
+package processor;
 
 import java.util.ArrayList;
 
+import bot.BotState;
+import goMove.GoMove;
+import goMove.GoMoveDeserializer;
 import io.riddles.go.game.state.GoPlayerState;
 import io.riddles.go.game.move.*;
 import io.riddles.go.game.player.GoPlayer;
@@ -38,34 +41,32 @@ import io.riddles.javainterface.io.PlayerResponse;
  *
  * @author Joost - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
-public class GoProcessor extends PlayerResponseProcessor<GoState, GoPlayer> {
+public class GoProcessor{
 
     private GoLogic logic;
 
-    public GoProcessor(PlayerProvider<GoPlayer> playerProvider) {
-        super(playerProvider);
+    public GoProcessor() {
         this.logic = new GoLogic();
     }
 
-    @Override
-    public GoState createNextStateFromResponse(GoState state, PlayerResponse input, int roundNumber) {
+    public BotState createNextStateFromMove(BotState myPlayerState, BotState oppositePlayerState, String input) {
 
         /* Clone playerStates for next State */
-        ArrayList<GoPlayerState> nextPlayerStates = clonePlayerStates(state.getPlayerStates());
+        //ArrayList<GoPlayerState> nextPlayerStates = clonePlayerStates(state.getPlayerStates());
 
-        GoState nextState = new GoState(state, nextPlayerStates, roundNumber);
-        nextState.setPlayerId(input.getPlayerId());
+        //GoState nextState = new GoState(state, nextPlayerStates, roundNumber);
+        //nextState.setPlayerId(input.getPlayerId());
 
-        GoPlayerState playerState = getActivePlayerState(nextPlayerStates, input.getPlayerId());
-        playerState.setPlayerId(input.getPlayerId());
+        //GoPlayerState playerState = getActivePlayerState(nextPlayerStates, input.getPlayerId());
+        //playerState.setPlayerId(input.getPlayerId());
 
         // parse the response
         GoMoveDeserializer deserializer = new GoMoveDeserializer();
-        GoMove move = deserializer.traverse(input.getValue());
-        playerState.setMove(move);
+        GoMove move = deserializer.traverse(input);
+        //playerState.setMove(move);
 
         try {
-            logic.transform(nextState, playerState);
+            logic.transform(myPlayerState, move);
         } catch (Exception e) {
             //LOGGER.info(String.format("Unknown response: %s", input.getValue()));
         }

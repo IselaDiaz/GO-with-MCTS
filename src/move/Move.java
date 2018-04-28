@@ -27,14 +27,22 @@ package move;
  * @author Jim van Eeden <jim@riddles.io>
  */
 public class Move {
-	private int x;
-	private int y;
+	public int x;
+	public int y;
 	
 	public Move(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
+	public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+    
 	public String toString() {
 		return String.format("place_move %d %d", this.x, this.y);
 	}

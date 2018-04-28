@@ -19,6 +19,9 @@
 
 package io.riddles.go.game.processor;
 
+import board.Board;
+import bot.BotState;
+import goMove.GoMove;
 import io.riddles.go.game.board.BoardOperations;
 import io.riddles.go.game.board.GoBoard;
 import io.riddles.go.game.move.GoMove;
@@ -26,7 +29,8 @@ import io.riddles.go.game.state.GoPlayerState;
 import io.riddles.go.game.state.GoState;
 import io.riddles.javainterface.exception.InvalidInputException;
 import io.riddles.go.game.board.Point;
-import io.riddles.javainterface.exception.InvalidMoveException;
+import javainterface.exception.InvalidMoveException;
+import move.Move;
 
 
 public class GoLogic {
@@ -43,35 +47,25 @@ public class GoLogic {
         mCheckedFields = new boolean[256][256];
     }
 
-    public void transform(GoState state, GoPlayerState playerState) throws InvalidInputException {
-        GoMove move = playerState.getMove();
-        if (move.getException() == null) {
-            switch(move.getMoveType()) {
-                case PLACE:
-                    transformPlaceMove(state, move, playerState.getPlayerId());
-                    break;
-                default:
-                    break;
+    public void transform(BotState state, GoMove move){
+    	switch(move.getMoveType()) {
+    		case PLACE:
+    			transformPlaceMove(state, move);
+    			break;
+    		default:
+    			break;
             }
-        }
     }
 
-    private void transformPlaceMove(GoState state, GoMove move, int playerId) {
-        GoBoard board = state.getBoard();
-        Point point = move.getCoordinate();
+    private void transformPlaceMove(BotState state, GoMove move) {
+    	Board board = state.getBoard();
+    	int playerId=board.getMyId();
+        Move point = move.getCoordinate();
 
         String[][] originalBoard = getBoardArray(board);
 
-        if (point.getX() > board.getWidth() || point.getY() > board.getHeight() || point.getX() < 0 || point.getY() < 0) { /* Move within range */
-            move.setException(new InvalidMoveException("Move out of bounds"));
-        }
-
-        if (!board.getFieldAt(point).equals(GoBoard.EMPTY_FIELD)) { /*Field is not available */
-            move.setException(new InvalidMoveException("Chosen position is already filled"));
-        }
-
         board.setFieldAt(point, String.valueOf(playerId));
-        board.setLastPosition(point);
+        //board.setLastPosition(point);
 
         int stonesTaken = checkCaptures(board, playerId);
         move.setStonesTaken(stonesTaken);
@@ -85,23 +79,23 @@ public class GoLogic {
         }
     }
 
-    public String[][] getBoardArray(GoBoard board) {
+    public String[][] getBoardArray(Board board) {
         String[][] clone = new String[board.getWidth()][board.getHeight()];
         for(int y = 0; y < board.getHeight(); y++)
             for(int x = 0; x < board.getWidth(); x++)
-                clone[x][y] = board.getFieldAt(new Point(x, y));
+                clone[x][y] = board.field[x][y];
         return clone;
     }
 
-    private Boolean hasNeighbors(GoBoard board, Point p) {
+    /*private Boolean hasNeighbors(GoBoard board, Point p) {
         if (p.x > 0 && !board.getFieldAt(new Point(p.x-1, p.y)).equals(GoBoard.EMPTY_FIELD)) return true;
         if (p.x < board.getWidth() - 1 	&& !board.getFieldAt(new Point(p.x+1, p.y)).equals(GoBoard.EMPTY_FIELD)) return true;
         if (p.y > 0 			&& !board.getFieldAt(new Point(p.x, p.y-1)).equals(GoBoard.EMPTY_FIELD)) return true;
         if (p.y < board.getHeight() - 1   && !board.getFieldAt(new Point(p.x, p.y+1)).equals(GoBoard.EMPTY_FIELD)) return true;
         return false;
-    }
+    }*/
 
-    private int checkCaptures(GoBoard board, int playerId) {
+    private int checkCaptures(Board board, int playerId) {
         int stonesTaken = 0;
         for(int y = 0; y < board.getHeight(); y++) {
             for(int x = 0; x < board.getWidth(); x++) {
