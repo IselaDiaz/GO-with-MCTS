@@ -17,20 +17,14 @@
  *     file that was distributed with this source code.
  */
 
-package io.riddles.go.game.processor;
+package processor;
 
 import board.Board;
 import bot.BotState;
 import goMove.GoMove;
 import move.Point;
-import io.riddles.go.game.board.BoardOperations;
-import io.riddles.go.game.board.GoBoard;
-import io.riddles.go.game.move.GoMove;
-import io.riddles.go.game.state.GoPlayerState;
-import io.riddles.go.game.state.GoState;
-import io.riddles.javainterface.exception.InvalidInputException;
-import io.riddles.go.game.board.Point;
-import javainterface.exception.InvalidMoveException;
+import node.Node;
+import board.BoardOperations;
 import move.Move;
 
 
@@ -282,16 +276,16 @@ public class GoLogic {
         }
     }
 
-    public boolean detectKo(GoState state) {
-        String[][] originalBoard = getBoardArray(state.getBoard());
+    public boolean detectKo(Node stateNode) {
+        String[][] originalBoard = getBoardArray(stateNode.getState().getBoard());
         String[][] middleBoard;
         String[][] compareBoard;
 
-        if (state.hasPreviousState()) {
-            GoState middleState = (GoState)state.getPreviousState();
+        if (stateNode.hasParent()) {
+            BotState middleState = stateNode.getParent().getState();
             middleBoard = getBoardArray(middleState.getBoard());
-            if (state.getPreviousState().hasPreviousState()) {
-                GoState compareState = (GoState)middleState.getPreviousState();
+            if (stateNode.getParent().hasParent()) {
+                BotState compareState = stateNode.getParent().getParent().getState();
                 compareBoard = getBoardArray(compareState.getBoard());
                 if (BoardOperations.compareFields(originalBoard, compareBoard) &&
                         !BoardOperations.compareFields(originalBoard, middleBoard)) {

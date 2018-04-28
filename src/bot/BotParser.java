@@ -114,6 +114,9 @@ class BotParser {
 					int opponentId = 2 - (myId + 1);
 					this.currentState.getBoard().setMyId(myId);
 					this.currentState.getBoard().setOpponentId(opponentId);
+					
+					//this.currentState.getBoard().
+					
 					break;
 				case "field_width":
 					this.currentState.getBoard().setWidth(Integer.parseInt(value));

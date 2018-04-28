@@ -20,6 +20,8 @@
 package processor;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import bot.BotState;
 import goMove.GoMove;
@@ -33,6 +35,8 @@ import io.riddles.javainterface.game.player.PlayerProvider;
 import io.riddles.javainterface.game.processor.PlayerResponseProcessor;
 import io.riddles.javainterface.game.state.AbstractPlayerState;
 import io.riddles.javainterface.io.PlayerResponse;
+import node.Node;
+import player.Player;
 
 /**
  * io.riddles.go.game.processor.GoProcessor - Created on 6/27/16
@@ -49,7 +53,7 @@ public class GoProcessor{
         this.logic = new GoLogic();
     }
 
-    public BotState createNextStateFromMove(BotState myPlayerState, BotState oppositePlayerState, String input) {
+    public BotState createNextStateFromMove(Node stateNode, String input) {
 
         /* Clone playerStates for next State */
         //ArrayList<GoPlayerState> nextPlayerStates = clonePlayerStates(state.getPlayerStates());
@@ -60,51 +64,41 @@ public class GoProcessor{
         //GoPlayerState playerState = getActivePlayerState(nextPlayerStates, input.getPlayerId());
         //playerState.setPlayerId(input.getPlayerId());
 
+    	Node nextStateNode=new Node(stateNode.getState(),stateNode);
+    	
         // parse the response
         GoMoveDeserializer deserializer = new GoMoveDeserializer();
         GoMove move = deserializer.traverse(input);
         //playerState.setMove(move);
 
+        BotState nextState=nextStateNode.getState();
+        
         try {
-            logic.transform(myPlayerState, move);
+            logic.transform(nextState, move);
         } catch (Exception e) {
             //LOGGER.info(String.format("Unknown response: %s", input.getValue()));
         }
 
         /* Determine double passes */
-        int inputPlayerId = input.getPlayerId();
-        if (move.getMoveType() == MoveType.PASS) {
-            if (nextState.hasPreviousState()) {
-                GoState checkState = nextState;
-                int movesBack = 0;
-                while (checkState.hasPreviousState() && movesBack < 2) {
-                    checkState = (GoState) checkState.getPreviousState();
-                    int checkStatePlayerId = checkState.getPlayerId();
-                    if (checkStatePlayerId == inputPlayerId) {
-                        ArrayList<GoPlayerState> tmpPS = checkState.getPlayerStates();
-                        GoPlayerState tmpP = getActivePlayerState(tmpPS, input.getPlayerId());
-
-                        if (tmpP.getMove().getMoveType() ==  MoveType.PASS) {
-                            nextState.setDoublePass();
-                        }
-                    }
-                    movesBack ++;
-                }
-            }
-        }
 
         /* Set Ko */
-        if (logic.detectKo(nextState)) {
+        /*if (logic.detectKo(stateNode) {
             nextState.setKoPlayerId(input.getPlayerId());
-        }
+        }*/
 
         /* Update player stats */
-        playerState.setStones(nextState.getBoard().getPlayerStones(playerState.getPlayerId()));
-        playerState.updateTotalStonesTaken(move.getStonesTaken());
-
-        nextPlayerStates.get(0).setScore(logic.calculateScore(nextState.getBoard(), nextPlayerStates.get(0).getPlayerId()));
-        nextPlayerStates.get(1).setScore(logic.calculateScore(nextState.getBoard(), nextPlayerStates.get(1).getPlayerId()));
-        nextState.setPlayerstates(nextPlayerStates);
+        Set<String> playersString=nextState.getPlayers().keySet();
+        int score;
+        
+        Iterator<String> iterator = playersString.iterator();
+        while(iterator.hasNext()) {
+        	Player player=nextState.getPlayers().get(iterator.next());
+        	if(player.getName().equals(nextState.getMyName()))
+        		score=logic.calculateScore(nextState.getBoard(), nextState.getBoard().getMyId());
+        	else
+        		score=logic.calculateScore(nextState.getBoard(), nextState.getBoard().getOpponentId());
+        	player.setPoints(score);
+        }
 
         return nextState;
     }
