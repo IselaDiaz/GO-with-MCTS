@@ -20,6 +20,8 @@
 package bot;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import board.Board;
 import player.Player;
@@ -46,9 +48,13 @@ public class BotState {
     
     private Board board;
     
+    //private Board previousBoard;
+    
     public BotState() {
         this.board = new Board();
         this.players = new HashMap<>();
+        
+        //this.previousBoard=new Board();
     }
     
     public void setTimebank(int value) {
@@ -115,6 +121,15 @@ public class BotState {
     	this.board=board;
     }
     
+    
+    /*public Board getPreviousBoard() {
+    	return this.previousBoard;
+    }
+    
+    public void setPreviousBoard(Board board) {
+    	this.previousBoard=board;
+    }*/
+    
     public BotState clone() {
         BotState Clone = new BotState();
         
@@ -125,25 +140,28 @@ public class BotState {
         Clone.setTimebank(this.timebank);
         Clone.setMyName(this.myName);
         Clone.setPlayers(this.players);
-        Clone.setBoard(this.board);
+        Clone.setBoard(this.board.clone());
+        //Clone.
         
         return Clone;
     }
     
-    public BotState cloneMyPlayer() {
-    	return this.clone();
-    }
-    
-    public BotState cloneOppositePlayer() {
-    	BotState Clone = this.clone();
-    	String origName=Clone.getMyName();
-		if(origName.substring(origName.length() - 1).equals("0"))
-			Clone.setMyName("player1");
-		else Clone.setMyName("player0");
-		
-		Clone.getBoard().setMyId(Clone.getBoard().getOpponentId());
-		Clone.getBoard().setOpponentId(Clone.getBoard().getMyId());
-		
-		return Clone;
+    public void changePlayer() {
+    	String origName=this.myName;
+    	String playerName;
+    	Set<String> playersString=this.players.keySet();
+
+        Iterator<String> iterator = playersString.iterator();
+         
+        while(iterator.hasNext()) {
+        	playerName=iterator.next();
+        	if(playerName!=origName) {
+        		this.setMyName(playerName);
+        		break;
+        	}
+        }
+
+		this.board.setMyId(this.board.getOpponentId());
+		this.board.setOpponentId(this.board.getMyId());
     }
 }

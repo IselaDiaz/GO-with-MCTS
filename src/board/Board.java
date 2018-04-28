@@ -21,6 +21,8 @@ package board;
 
 import java.util.ArrayList;
 
+import bot.BotState;
+import move.Point;
 import move.Move;
 
 /**
@@ -34,14 +36,14 @@ import move.Move;
  */
 
 public class Board {
-    private final String EMPTY_FIELD = ".";
+    public static final String EMPTY_FIELD = ".";
 
     private int myId;
     private int opponentId;
     private int height;
     private int width;
     
-	private String[][] field;
+	public String[][] field;
 
 	public void parseFromString(String input) {
         this.field = new String[this.width][this.height];
@@ -114,5 +116,38 @@ public class Board {
     	return this.opponentId;
     }
     
+    public void setField(String[][] field) {
+    	this.field=field;
+    }
+    
     //public Board clone()
+    public void setFieldAt(Move c, String f) {
+        field[c.x][c.y] = f;
+    }
+    
+    public String getFieldAt(Point c) {
+        return field[c.x][c.y];
+    }
+    
+    public void initializeFromArray(String[][] array) {
+        for (int y = 0; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+                field[x][y] = array[x][y];
+            }
+        }
+    }
+    
+    //cloning board
+    public Board clone() {
+        Board Clone = new Board();
+        
+        Clone.setMyId(this.myId);
+        Clone.setOpponentId(this.opponentId);
+        Clone.setHeight(this.height);
+        Clone.setWidth(this.width);
+        Clone.setField(this.field);
+
+        return Clone;
+    }
+    
 }
