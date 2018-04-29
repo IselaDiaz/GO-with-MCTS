@@ -20,6 +20,7 @@
 package processor;
 
 import board.Board;
+import bot.AINode;
 import bot.BotState;
 import goMove.GoMove;
 import move.Point;
@@ -92,7 +93,7 @@ public class GoLogic {
             for(int x = 0; x < board.getWidth(); x++) {
                 Point point = new Point(x,y);
                 String field = board.getFieldAt(point);
-                if (!board.getFieldAt(point).equals(Board.EMPTY_FIELD) && !field.equals(String.valueOf(playerId))) {
+                if (!field.equals(Board.EMPTY_FIELD) && !field.equals(String.valueOf(playerId)) && !field.equals("-1")) {
                     mFoundLiberties = 0;
                     boolean[][] mark = new boolean[board.getWidth()][board.getHeight()];
                     for (int tx = 0; tx < board.getHeight(); tx++) {
@@ -135,7 +136,7 @@ public class GoLogic {
         for(int y = 0; y < board.getHeight(); y++)
             for(int x = 0; x < board.getWidth(); x++)
                 for (int playerId = 1; playerId <= 2; playerId++)
-                    if (board.getFieldAt(new Point(x,y)).equals(Board.EMPTY_FIELD) &&
+                    if (board.getFieldAt(new Point(x,y)).equals(Board.EMPTY_FIELD) && //should i add -1?
                             checkSuicideRule(board, new Move(x,y), String.valueOf(playerId)))
                         return false;
         // No move can be played
@@ -255,7 +256,7 @@ public class GoLogic {
         if (mark[p.x][p.y]) return;
 
         // Make sure this field is the right color to fill
-        if (!board.getFieldAt(p).equals(Board.EMPTY_FIELD)) {
+        if (!board.getFieldAt(p).equals(Board.EMPTY_FIELD) && !board.getFieldAt(p).equals("-1")) {
             if (!board.getFieldAt(p).equals(srcColor)) {
                 mIsTerritory = false;
             }
@@ -276,7 +277,7 @@ public class GoLogic {
         }
     }
 
-    public boolean detectKo(Node stateNode) {
+    public boolean detectKo(AINode stateNode) {
         String[][] originalBoard = getBoardArray(stateNode.getState().getBoard());
         String[][] middleBoard;
         String[][] compareBoard;
