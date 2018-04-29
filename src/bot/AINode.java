@@ -3,7 +3,7 @@ package bot;
 import move.Move;
 
 import java.util.ArrayList;
-
+import processor.GoProcessor;
 public class AINode {
 
     BotState state;
@@ -31,9 +31,10 @@ public class AINode {
 
 
     public void setChildren(){
+        GoProcessor processor = new GoProcessor();
         this.availableMoves.forEach(mov -> {
             BotState childBotState= new BotState();
-            childBotState = BotState.getNextState(state, mov);
+            childBotState = processor.createNextStateFromMove(this, mov.toString());
             AINode childNode = new AINode(childBotState, this);
             this.children.add(childNode);
         });
