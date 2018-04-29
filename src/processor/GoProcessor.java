@@ -128,9 +128,10 @@ public class GoProcessor{
         HashMap<String,Player> players = state.getPlayers();
         double scorePlayer0=0;
         double scorePlayer1=0;
-        Integer winnerId = null;
-        
-        
+        Integer winnerId = -1;
+
+
+        //System.out.println("winID " +winnerId);
         Set<String> playersString=players.keySet();
         
         Iterator<String> iterator = playersString.iterator();
@@ -143,8 +144,8 @@ public class GoProcessor{
         		scorePlayer1 = player.getPoints();
         }
 
-        if (scorePlayer0 > scorePlayer1) winnerId = 0;
-        if (scorePlayer1 > scorePlayer0) winnerId = 1;
+        if (scorePlayer0 > scorePlayer1) {winnerId = 0;};
+        if (scorePlayer1 > scorePlayer0) {winnerId = 1;};
         
         return winnerId;
     }

@@ -34,11 +34,11 @@ import player.Player;
  * @author Jim van Eeden <jim@riddles.io>
  */
 
-class BotParser {
+public class BotParser {
 
 	private Scanner scan;
-	private BotStarter bot;
-	private BotState currentState;
+	public BotStarter bot;
+	public static BotState currentState;
 
 	BotParser(BotStarter bot) {
 		this.scan = new Scanner(System.in);

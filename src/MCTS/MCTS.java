@@ -1,6 +1,7 @@
 package MCTS;
 
 import bot.BotState;
+import bot.BotParser;
 import goMove.GoMove;
 import move.Move;
 import node.AINode;
@@ -15,32 +16,40 @@ public class MCTS {
 
 
 	public GoMove selectMove() {
-
-		BotState currentBoardState = new BotState();
+        //System.out.println("im in selectMove");
+		BotState currentBoardState = BotParser.currentState;
 		int timeBank = currentBoardState.getTimebank();
 		int maxRounds = currentBoardState.getMaxRounds();
 		int roundNumber = currentBoardState.getRoundNumber();
-
+        //System.out.println("timebank " +timeBank);
 		double computationalTimePerMove = timeBank/(maxRounds-roundNumber+1);
+        //System.out.println("comptime " +computationalTimePerMove);
 		long start = System.currentTimeMillis();
 		long end = (long) (start + computationalTimePerMove);
-
+		//System.out.println("start " +start);
+        //System.out.println("end " +end);
 		AINode rootNode = new AINode(currentBoardState, null, null);
 		while (System.currentTimeMillis() < end)  {
 
+            //System.out.println("im in first while");
 			AINode currNode = rootNode;
 			//visited.add(currNode);
 
             while (currNode.getRemainingMoves().size() == 0){
+                //System.out.println("im in second while ");
             	currNode = selectWithUCT(currNode);   //Selection with UCT
 			}
 
             AINode newNode = expand(currNode);
+            //System.out.println(newNode);
+            //System.out.println("i came out after expand");
             //AINode newNode = selectWithUCT(currNode) ;
             //visited.add(newNode);
 			int winId = rollOut(newNode);
+            //System.out.println("winID " +winId);
 			backpropagate(newNode, winId);
 		}
+        //System.out.println("i came out selectmove");
 		AINode bestNode = rootNode.getChildWithMaxScore();
 		GoMove bestMove = bestNode.getAction();
 		return bestMove;
@@ -62,13 +71,19 @@ public class MCTS {
 				bestValue = uctValue;
 			}
 		}
+
 		return selected;
 	}
 	
 	public AINode expand(AINode currNode){
+        //System.out.println("im in expand");
 		Move randomMove = currNode.getRandomAction();
+        //System.out.println("i got random action ");
 		AINode childNode = processor.createNextStateFromMove(currNode, randomMove.toString() );
-		currNode.addChildtoArray(childNode);
+        //System.out.println("i got a childNode ");
+        //System.out.println(childNode);
+		boolean added = currNode.addChildtoArray(childNode);
+        //System.out.println("i am returning a child node");
         return childNode;
 	}
 
@@ -76,12 +91,18 @@ public class MCTS {
 	
 	
 	public int rollOut(AINode stateNode){
-
+        //System.out.println("i am in rollout");
 		while(!processor.hasGameEnded(stateNode)) {
 			Move move=stateNode.randomMove();
 			stateNode=processor.createNextStateFromMove(stateNode, move.toString());
+            //System.out.println("stateNode " +stateNode);
 		}
+        //System.out.println("i am done rolling out");
+        Integer winID = Integer.valueOf(processor.getWinnerId(stateNode.getState()));
+        //System.out.println("winID " +winID);
 		return processor.getWinnerId(stateNode.getState());
+		//Random r = new Random();
+		//return r.nextInt(2);
 	}
 
 

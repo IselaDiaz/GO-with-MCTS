@@ -18,7 +18,7 @@ public class AINode {
     BotState state;
     //ArrayList<Move> availableMoves;
     ArrayList<Move> remainingMoves;
-    ArrayList<AINode> childArray;
+    ArrayList<AINode> childArray = new ArrayList<AINode>();
     //int playerID;
     AINode parent;
     int totalScore;
@@ -83,8 +83,14 @@ public class AINode {
     	return availableMoves.get(this.random.nextInt(moveCount));
     }
 	
-    public void addChildtoArray(AINode childNode) {
-        childArray.add(childNode);
+    public boolean addChildtoArray(AINode childNode) {
+        //System.out.println("im in addChildtoArray ");
+         boolean added = this.childArray.add(childNode);
+
+        //System.out.println(added);
+        //System.out.println("done adding Child ");
+        return added;
+        //return true;
     }
 
     public ArrayList<AINode> getChildArray() {
