@@ -69,7 +69,8 @@ public class MCTS {
 	public void backpropagate(int winID){
 
 		for(AINode node : visited){
-
+          node.updateTotalScore(winID);
+          node.updateNumOfVisits();
 
 		}
 	}

@@ -9,6 +9,7 @@ public class AINode {
     BotState state;
     ArrayList<Move> availableMoves;
     ArrayList<AINode> children;
+    int playerID;
     AINode parent;
     int totalScore;
     int numOfVisits;
@@ -17,6 +18,7 @@ public class AINode {
         this.state = state;
         this.parent = parent;
         setAvailableMoves();
+        this.playerID = state.getBoard().getMyId();
     }
 
     public void setAvailableMoves(){
@@ -31,7 +33,7 @@ public class AINode {
     public void setChildren(){
         this.availableMoves.forEach(mov -> {
             BotState childBotState= new BotState();
-            //childBotState = BotState.getNextState(state, mov);
+            childBotState = BotState.getNextState(state, mov);
             AINode childNode = new AINode(childBotState, this);
             this.children.add(childNode);
         });
@@ -40,15 +42,15 @@ public class AINode {
     public ArrayList<AINode> getChildren(){
         return this.children;
     }
-    public void addScore(double score){
-        if (this.totalScore != Integer.MIN_VALUE)
-            this.totalScore += score;
+    public void updateTotalScore(int winID){
+        if (this.playerID == winID)
+            this.totalScore = totalScore++;
     }
     public int getTotalScore(){
         return this.totalScore;
     }
 
-    public void incrementNumOfVisits() {
+    public void updateNumOfVisits() {
         this.numOfVisits = numOfVisits++;
     }
     public int getNumOfVisits(){
