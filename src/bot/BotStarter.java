@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import move.Move;
-
+import MCTS.MCTS;
 /**
  * bot.BotStarter
  * 
@@ -43,14 +43,9 @@ public class BotStarter {
      * @return A Move object
      */
     public Move doMove(BotState state) {
-    	ArrayList<Move> availableMoves = state.getBoard().getAvailableMoves();
-    	int moveCount = availableMoves.size();
-
-    	if (moveCount <= 0) {
-    		return null;
-		}
-
-    	return availableMoves.get(this.random.nextInt(moveCount));
+    	MCTS decisionMaking = new MCTS();
+    	Move bestMove= decisionMaking.selectMove();
+    	return bestMove;
     }
 
  	public static void main(String[] args) {

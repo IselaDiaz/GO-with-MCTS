@@ -14,7 +14,7 @@ public class MCTS {
 
 
 
-	public void selectMove() {
+	public Move selectMove() {
 
 		BotState currentBoardState = new BotState();
 		int timeBank = currentBoardState.getTimebank();
@@ -25,7 +25,7 @@ public class MCTS {
 		long start = System.currentTimeMillis();
 		long end = (long) (start + computationalTimePerMove);
 
-		AINode rootNode = new AINode(currentBoardState, null);
+		AINode rootNode = new AINode(currentBoardState, null, null);
 		while (System.currentTimeMillis() < end)  {
 
 			AINode currNode = rootNode;
@@ -39,10 +39,13 @@ public class MCTS {
             //AINode newNode = selectWithUCT(currNode) ;
             //visited.add(newNode);
 			int winId = rollOut(newNode);
+			backpropagate(newNode, winId);
+		}
+		AINode bestNode = rootNode.getChildWithMaxScore();
+		Move bestMove = bestNode.getAction();
+		return bestMove;
+		}
 
-			backpropagate(AINode newNode int winID);
-		}
-		}
 
 	public AINode selectWithUCT(AINode currNode){
 		double epsilon = 1e-6;
@@ -82,8 +85,6 @@ public class MCTS {
 			node = node.getParent();
 
 		}
-
-
 		}
 	}
 
