@@ -75,7 +75,8 @@ public class Board {
                 }
             }
         }
-	    
+	    //adding pass move
+	    //narrow the list of available moves
 		return moves;
 	}
 	

@@ -135,7 +135,7 @@ public class GoProcessor{
         	Player player=players.get(iterator.next());
         	int playerId=getIdFromPlayer(player,state);
 			if(playerId==0)
-        		scorePlayer0 = player.getPoints();
+        		scorePlayer0 = player.getPoints()+7.5;//komi
         	else
         		scorePlayer1 = player.getPoints();
         }
