@@ -52,6 +52,8 @@ public class AINode {
              this.children.add(childNode);
          });
      }*/
+    
+    
     public Move getRandomAction() {
         int noOfPossibleMoves = this.remainingMoves.size();
         int selectRandom = (int) (Math.random() * ((noOfPossibleMoves - 1) + 1));
@@ -81,6 +83,10 @@ public class AINode {
     public AINode getParent() {
         return this.parent;
     }
+    
+    public boolean hasParent() {
+		return parent!=null;
+	}
 
     public void updateTotalScore(int winID) {
         if (this.playerID == winID)
