@@ -151,4 +151,19 @@ public class Board {
         return Clone;
     }
     
+    public void changePlayer() {
+    	this.setMyId(this.opponentId);
+		this.setOpponentId(this.myId);
+		
+		for (int y = 0; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+            	switch(this.field[x][y]) {
+            		case "1": this.setFieldAt(new Move(x,y), "0"); break;
+            		case "0": this.setFieldAt(new Move(x,y), "1"); break;
+            		case "-1": this.setFieldAt(new Move(x,y), EMPTY_FIELD);
+            	}
+            }
+		}
+		
+    }
 }
