@@ -1,6 +1,7 @@
 package MCTS;
 
 import bot.BotState;
+import goMove.GoMove;
 import move.Move;
 import node.Node;
 import processor.GoProcessor;
@@ -14,7 +15,7 @@ public class MCTS {
 	GoProcessor processor = new GoProcessor();
 
 
-	public Move selectMove() {
+	public GoMove selectMove() {
 
 		BotState currentBoardState = new BotState();
 		int timeBank = currentBoardState.getTimebank();
@@ -42,7 +43,7 @@ public class MCTS {
 			backpropagate(newNode, winId);
 		}
 		AINode bestNode = rootNode.getChildWithMaxScore();
-		Move bestMove = bestNode.getAction();
+		GoMove bestMove = bestNode.getAction();
 		return bestMove;
 		}
 

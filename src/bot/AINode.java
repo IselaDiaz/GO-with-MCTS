@@ -8,36 +8,43 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+import goMove.GoMove;
+
 //import processor.GoProcessor;
 public class AINode {
 	private Random random= new Random();
 	
     BotState state;
-    ArrayList<Move> availableMoves;
+    //ArrayList<Move> availableMoves;
     ArrayList<Move> remainingMoves;
     ArrayList<AINode> childArray;
-    int playerID;
+    //int playerID;
     AINode parent;
     int totalScore;
     int numOfVisits;
-    Move action;
+    GoMove action;
 
-    public AINode(BotState state, AINode parent,Move action) {
+    public AINode(BotState state, AINode parent,GoMove action) {
         this.state = state;
         this.parent = parent;
-        setAvailableMoves();
-        this.playerID = state.getBoard().getMyId();
-        this.remainingMoves = this.getAvailableMoves();
+        //setAvailableMoves();
+        //this.playerID = state.getBoard().getMyId();
+        setRemainingMoves();
         this.action=action;
     }
 
-    public void setAvailableMoves() {
+    /*public void setAvailableMoves() {
         this.availableMoves = state.getBoard().getAvailableMoves();
+    }*/
+
+    public void setRemainingMoves() {
+        this.remainingMoves = state.getBoard().getAvailableMoves();
     }
 
-    public ArrayList<Move> getAvailableMoves() {
+    
+    /*public ArrayList<Move> getAvailableMoves() {
         return this.availableMoves;
-    }
+    }*/
 
     public ArrayList<Move> getRemainingMoves() {
         return this.remainingMoves;
@@ -63,13 +70,14 @@ public class AINode {
     }
 
 	public Move randomMove() {
-    	int moveCount = this.availableMoves.size();
+		ArrayList <Move> availableMoves = state.getBoard().getAvailableMoves();
+    	int moveCount = availableMoves.size();
 
     	if (moveCount <= 0) {
     		return null;
 		}
 
-    	return this.availableMoves.get(this.random.nextInt(moveCount));
+    	return availableMoves.get(this.random.nextInt(moveCount));
     }
 	
     public void addChildtoArray(AINode childNode) {
@@ -89,7 +97,7 @@ public class AINode {
 	}
 
     public void updateTotalScore(int winID) {
-        if (this.playerID == winID)
+        if (this.state.getBoard().getMyId() == winID)
             this.totalScore = totalScore++;
     }
 
@@ -123,7 +131,7 @@ public class AINode {
             return bestChild;*/
 
         }
-        public Move getAction(){
+        public GoMove getAction(){
         return this.action;
         }
     }

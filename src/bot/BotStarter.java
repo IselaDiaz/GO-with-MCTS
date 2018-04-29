@@ -24,6 +24,7 @@ import java.util.Random;
 
 import move.Move;
 import MCTS.MCTS;
+import goMove.GoMove;
 /**
  * bot.BotStarter
  * 
@@ -44,8 +45,8 @@ public class BotStarter {
      */
     public Move doMove(BotState state) {
     	MCTS decisionMaking = new MCTS();
-    	Move bestMove= decisionMaking.selectMove();
-    	return bestMove;
+    	GoMove bestMove= decisionMaking.selectMove();
+    	return bestMove.getCoordinate();
     }
 
  	public static void main(String[] args) {

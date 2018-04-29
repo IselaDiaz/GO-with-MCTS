@@ -35,7 +35,7 @@ public class GoMove{
     private int stonesTaken;
 
     public GoMove(MoveType type, Move c) {
-        super();
+        //super();
         this.type = type;
         this.coordinate = c;
     }

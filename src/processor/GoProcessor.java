@@ -28,7 +28,7 @@ import bot.AINode;
 import bot.BotState;
 import goMove.GoMove;
 import goMove.GoMoveDeserializer;
-import node.Node;
+//import node.Node;
 import player.Player;
 
 /**
@@ -46,7 +46,7 @@ public class GoProcessor{
         this.logic = new GoLogic();
     }
 
-    public Node createNextStateFromMove(AINode stateNode, String input) {
+    public AINode createNextStateFromMove(AINode stateNode, String input) {
 
         /* Clone playerStates for next State */
         //ArrayList<GoPlayerState> nextPlayerStates = clonePlayerStates(state.getPlayerStates());
@@ -96,7 +96,8 @@ public class GoProcessor{
         
         //alternating? more stuff to change
         nextStateNode.getState().changePlayer();
-        nextStateNode.setAvailableMoves();
+        //nextStateNode.setAvailableMoves();
+        nextStateNode.setRemainingMoves();
         
         return nextStateNode;
     }
@@ -116,7 +117,7 @@ public class GoProcessor{
     }
 
 
-    public boolean hasGameEnded(Node stateNode) {
+    public boolean hasGameEnded(AINode stateNode) {
     	BotState state=stateNode.getState();
         if (state.getRoundNumber() >= state.getMaxRounds()) return true;
         return logic.isBoardFull(state.getBoard()) || logic.detectKo(stateNode);
