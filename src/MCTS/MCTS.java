@@ -21,7 +21,7 @@ public class MCTS {
 		int maxRounds = currentBoardState.getMaxRounds();
 		int roundNumber = currentBoardState.getRoundNumber();
 
-		double computationalTimePerMove = timeBank/(maxRounds-roundNumber);
+		double computationalTimePerMove = timeBank/(maxRounds-roundNumber+1);
 		long start = System.currentTimeMillis();
 		long end = (long) (start + computationalTimePerMove);
 
@@ -44,7 +44,7 @@ public class MCTS {
 		AINode bestNode = rootNode.getChildWithMaxScore();
 		GoMove bestMove = bestNode.getAction();
 		return bestMove;
-		}
+	}
 
 
 	public AINode selectWithUCT(AINode currNode){
@@ -64,6 +64,7 @@ public class MCTS {
 		}
 		return selected;
 	}
+	
 	public AINode expand(AINode currNode){
 		Move randomMove = currNode.getRandomAction();
 		AINode childNode = processor.createNextStateFromMove(currNode, randomMove.toString() );

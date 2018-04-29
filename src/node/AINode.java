@@ -32,6 +32,8 @@ public class AINode {
         //this.playerID = state.getBoard().getMyId();
         setRemainingMoves();
         this.action=action;
+        totalScore=0;
+        numOfVisits=0;
     }
 
     /*public void setAvailableMoves() {
@@ -99,7 +101,7 @@ public class AINode {
 
     public void updateTotalScore(int winID) {
         if (this.state.getBoard().getMyId() == winID)
-            this.totalScore = totalScore++;
+            totalScore++;
     }
 
     public int getTotalScore() {
@@ -107,7 +109,7 @@ public class AINode {
     }
 
     public void updateNumOfVisits() {
-        this.numOfVisits = numOfVisits++;
+        numOfVisits++;
     }
 
     public int getNumOfVisits() {
@@ -119,9 +121,8 @@ public class AINode {
     }
 
     public AINode getChildWithMaxScore() {
-        return Collections.max(this.childArray, Comparator.comparing(c -> {
-            return c.getNumOfVisits();
-        }));
+        //return Collections.max(this.childArray, Comparator.comparing(AINode::getNumOfVisits));
+    	return this.childArray.stream().max(Comparator.comparing(AINode::getNumOfVisits)).get();
         /*int bestValue = Integer.MIN_VALUE;
         AINode bestChild ;
         for (AINode child : childArray) {
@@ -131,8 +132,9 @@ public class AINode {
             }
             return bestChild;*/
 
-        }
-        public GoMove getAction(){
-        return this.action;
-        }
     }
+    
+    public GoMove getAction(){
+        return this.action;
+    }
+}
