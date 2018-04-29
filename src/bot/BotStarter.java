@@ -22,7 +22,9 @@ package bot;
 import java.util.ArrayList;
 import java.util.Random;
 
+import MCTS.MCTS;
 import move.Move;
+import node.Node;
 
 /**
  * bot.BotStarter
@@ -35,14 +37,24 @@ import move.Move;
 
 public class BotStarter {
 
-    private Random random = new Random();
+    //private Random random = new Random();
     /**
      * Makes a turn. Edit this method to make your bot smarter.
      * Currently performs random, but legal moves.
      *
      * @return A Move object
      */
+	
+	MCTS mcts=new MCTS();
+	
     public Move doMove(BotState state) {
+    	/*def monte_carlo_tree_search(root):
+        while resources_left(time, computational power):
+            leaf = traverse(root) # leaf = unvisited node 
+            simulation_result = rollout(leaf)
+            backpropagate(leaf, simulation_result)
+        return best_child(root)*/
+    	
     	ArrayList<Move> availableMoves = state.getBoard().getAvailableMoves();
     	int moveCount = availableMoves.size();
 
@@ -51,6 +63,13 @@ public class BotStarter {
 		}
 
     	return availableMoves.get(this.random.nextInt(moveCount));
+    	
+    	System.nanoTime();
+    	while()
+    	
+    	Node nodeState=new Node(state);
+    	//selection
+    	
     }
 
  	public static void main(String[] args) {

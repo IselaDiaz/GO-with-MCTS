@@ -32,6 +32,10 @@ public class Node {
         this.availableMoves = state.getBoard().getAvailableMoves();
     }
 	
+	public ArrayList<Move> getAvailableMoves(){
+        return this.availableMoves;
+    }
+	
 	public Node getParent() {
 		return this.parent;
 	}

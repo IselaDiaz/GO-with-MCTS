@@ -95,6 +95,7 @@ public class GoProcessor{
         
         //alternating? more stuff to change
         nextStateNode.getState().changePlayer();
+        nextStateNode.setAvailableMoves();
         
         return nextStateNode;
     }

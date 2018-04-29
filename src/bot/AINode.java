@@ -9,7 +9,7 @@ public class AINode {
     BotState state;
     ArrayList<Move> availableMoves;
     ArrayList<AINode> children;
-    AINode parent;
+    //AINode parent;
     int totalScore;
     int numOfVisits;
 
