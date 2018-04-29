@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import bot.AINode;
 import bot.BotState;
 import goMove.GoMove;
 import goMove.GoMoveDeserializer;
@@ -45,7 +46,7 @@ public class GoProcessor{
         this.logic = new GoLogic();
     }
 
-    public Node createNextStateFromMove(Node stateNode, String input) {
+    public Node createNextStateFromMove(AINode stateNode, String input) {
 
         /* Clone playerStates for next State */
         //ArrayList<GoPlayerState> nextPlayerStates = clonePlayerStates(state.getPlayerStates());
@@ -56,14 +57,14 @@ public class GoProcessor{
         //GoPlayerState playerState = getActivePlayerState(nextPlayerStates, input.getPlayerId());
         //playerState.setPlayerId(input.getPlayerId());
 
-    	//parent updated here and also changed stuff for new player
-    	Node nextStateNode=new Node(stateNode.getState().clone(),stateNode);//parent updated here
-    	
-        // parse the response
+    	 // parse the response
         GoMoveDeserializer deserializer = new GoMoveDeserializer();
         GoMove move = deserializer.traverse(input);
         //playerState.setMove(move);
-
+    	
+    	//parent updated here and also changed stuff for new player
+    	AINode nextStateNode=new AINode(stateNode.getState().clone(),stateNode,move);//parent updated here
+    	
         BotState nextState=nextStateNode.getState();
         
         try {
@@ -95,6 +96,7 @@ public class GoProcessor{
         
         //alternating? more stuff to change
         nextStateNode.getState().changePlayer();
+        nextStateNode.setAvailableMoves();
         
         return nextStateNode;
     }
@@ -135,7 +137,7 @@ public class GoProcessor{
         	Player player=players.get(iterator.next());
         	int playerId=getIdFromPlayer(player,state);
 			if(playerId==0)
-        		scorePlayer0 = player.getPoints();
+        		scorePlayer0 = player.getPoints()+7.5;//komi
         	else
         		scorePlayer1 = player.getPoints();
         }
