@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 public class MCTS {
-
+	GoProcessor processor = new GoProcessor();
 
 
 	public Move selectMove() {
@@ -65,18 +65,30 @@ public class MCTS {
 		return selected;
 	}
 	public AINode expand(AINode currNode){
-		GoProcessor processor = new GoProcessor();
 		Move randomMove = currNode.getRandomAction();
 		AINode childNode = processor.createNextStateFromMove(currNode, randomMove.toString() );
 		currNode.addChildtoArray(childNode);
         return childNode;
 	}
 
-	public int rollOut(AINode newNode){
-		int i = 0 ;
-		return  i;
+	
+	
+	
+	public int rollOut(AINode stateNode){
+
+		while(!processor.hasGameEnded(stateNode)) {
+			Move move=randomMove(stateNode);
+			stateNode=processor.createNextStateFromMove(stateNode, move.toString());
+		}
+		return processor.getWinnerId(stateNode.getState());
 	}
 
+
+		
+
+	
+	
+	
 	public void backpropagate(AINode node, int winID){
 		//AINode node = node ;
 		while(node.getParent() != null){

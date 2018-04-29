@@ -1,6 +1,7 @@
 package bot;
 
 import move.Move;
+import node.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +58,16 @@ public class AINode {
         return mov;
     }
 
+	public Move randomMove() {
+    	int moveCount = this.availableMoves.size();
+
+    	if (moveCount <= 0) {
+    		return null;
+		}
+
+    	return this.availableMoves.get(this.random.nextInt(moveCount));
+    }
+	
     public void addChildtoArray(AINode childNode) {
         childArray.add(childNode);
     }
