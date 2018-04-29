@@ -19,8 +19,8 @@
 
 package bot;
 
-import java.util.ArrayList;
-import java.util.Random;
+//import java.util.ArrayList;
+//import java.util.Random;
 
 import move.Move;
 import MCTS.MCTS;
@@ -36,7 +36,7 @@ import goMove.GoMove;
 
 public class BotStarter {
 
-    private Random random = new Random();
+    //private Random random = new Random();
     /**
      * Makes a turn. Edit this method to make your bot smarter.
      * Currently performs random, but legal moves.

@@ -24,10 +24,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import bot.AINode;
 import bot.BotState;
 import goMove.GoMove;
 import goMove.GoMoveDeserializer;
+import node.AINode;
 //import node.Node;
 import player.Player;
 

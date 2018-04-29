@@ -3,12 +3,11 @@ package MCTS;
 import bot.BotState;
 import goMove.GoMove;
 import move.Move;
-import node.Node;
+import node.AINode;
 import processor.GoProcessor;
-import bot.AINode;
 
-import java.util.LinkedList;
-import java.util.List;
+//import java.util.LinkedList;
+//import java.util.List;
 import java.util.Random;
 
 public class MCTS {

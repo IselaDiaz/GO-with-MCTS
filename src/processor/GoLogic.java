@@ -20,11 +20,10 @@
 package processor;
 
 import board.Board;
-import bot.AINode;
 import bot.BotState;
 import goMove.GoMove;
 import move.Point;
-import node.Node;
+import node.AINode;
 import board.BoardOperations;
 import move.Move;
 

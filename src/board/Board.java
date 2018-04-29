@@ -21,7 +21,7 @@ package board;
 
 import java.util.ArrayList;
 
-import bot.BotState;
+//import bot.BotState;
 import move.Point;
 import move.Move;
 

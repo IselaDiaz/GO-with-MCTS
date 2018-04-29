@@ -1,4 +1,4 @@
-package bot;
+package node;
 
 import move.Move;
 //import node.Node;
@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+import bot.BotState;
 import goMove.GoMove;
 
 //import processor.GoProcessor;
