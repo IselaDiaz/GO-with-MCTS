@@ -8,7 +8,8 @@ public class AINode {
 
     BotState state;
     ArrayList<Move> availableMoves;
-    ArrayList<AINode> children;
+    ArrayList<Move> remainingMoves;
+    ArrayList<AINode> childArray;
     int playerID;
     AINode parent;
     int totalScore;
@@ -19,6 +20,7 @@ public class AINode {
         this.parent = parent;
         setAvailableMoves();
         this.playerID = state.getBoard().getMyId();
+        this.remainingMoves = this.getAvailableMoves();
     }
 
     public void setAvailableMoves(){
@@ -28,9 +30,11 @@ public class AINode {
     public ArrayList<Move> getAvailableMoves(){
         return this.availableMoves;
     }
+    public ArrayList<Move> getRemainingMoves(){
+        return this.remainingMoves;
+    }
 
-
-    public void setChildren(){
+   /* public void setChildren(){
         GoProcessor processor = new GoProcessor();
         this.availableMoves.forEach(mov -> {
             BotState childBotState= new BotState();
@@ -38,10 +42,23 @@ public class AINode {
             AINode childNode = new AINode(childBotState, this);
             this.children.add(childNode);
         });
-
+    }*/
+    public Move getRandomAction(){
+        int noOfPossibleMoves = this.availableMoves.size();
+        int selectRandom = (int) (Math.random() * ((noOfPossibleMoves - 1) + 1));
+        Move mov = this.availableMoves.get(selectRandom);
+        remainingMoves.remove(mov);
+        return mov;
     }
-    public ArrayList<AINode> getChildren(){
-        return this.children;
+    public void addChildtoArray(AINode childNode){
+        childArray.add(childNode);
+    }
+    public ArrayList<AINode> getChildArray(){
+        return this.childArray;
+    }
+
+    public AINode getParent(){
+        return this.parent;
     }
     public void updateTotalScore(int winID){
         if (this.playerID == winID)

@@ -1,6 +1,7 @@
 package MCTS;
 
 import bot.BotState;
+import move.Move;
 import node.Node;
 import processor.GoProcessor;
 import bot.AINode;
@@ -11,7 +12,7 @@ import java.util.Random;
 
 public class MCTS {
 
-	List<AINode> visited = new LinkedList<AINode>();
+
 
 	public void selectMove() {
 
@@ -28,15 +29,18 @@ public class MCTS {
 		while (System.currentTimeMillis() < end)  {
 
 			AINode currNode = rootNode;
-			visited.add(currNode);
-            while (currNode.getChildren().size()!=0){
+			//visited.add(currNode);
+
+            while (currNode.getRemainingMoves().size() == 0){
             	currNode = selectWithUCT(currNode);   //Selection with UCT
 			}
-            expand(currNode);
-            AINode newNode = selectWithUCT(currNode) ;
-            visited.add(newNode);
+
+            AINode newNode = expand(currNode);
+            //AINode newNode = selectWithUCT(currNode) ;
+            //visited.add(newNode);
 			int winId = rollOut(newNode);
-			backpropagate(int winID);
+
+			backpropagate(AINode newNode int winID);
 		}
 		}
 
@@ -45,7 +49,7 @@ public class MCTS {
 		Random r = new Random();
 		AINode selected = null;
 		double bestValue = Double.MIN_VALUE;
-		for (AINode child : currNode.getChildren()) {
+		for (AINode child : currNode.getChildArray()) {
 			double uctValue = child.getTotalScore() / (child.getNumOfVisits() + epsilon) +
 					Math.sqrt(Math.log(child.getNumOfVisits()+1) / (child.getNumOfVisits() + epsilon)) +
 					r.nextDouble() * epsilon;
@@ -57,8 +61,12 @@ public class MCTS {
 		}
 		return selected;
 	}
-	public void expand(AINode currNode){
-		currNode.setChildren();
+	public AINode expand(AINode currNode){
+		GoProcessor processor = new GoProcessor();
+		Move randomMove = currNode.getRandomAction();
+		AINode childNode = processor.createNextStateFromMove(currNode, randomMove.toString() );
+		currNode.addChildtoArray(childNode);
+        return childNode;
 	}
 
 	public int rollOut(AINode newNode){
@@ -66,15 +74,19 @@ public class MCTS {
 		return  i;
 	}
 
-	public void backpropagate(int winID){
+	public void backpropagate(AINode node, int winID){
+		//AINode node = node ;
+		while(node.getParent() != null){
+			node.updateTotalScore(winID);
+			node.updateNumOfVisits();
+			node = node.getParent();
 
-		for(AINode node : visited){
-          node.updateTotalScore(winID);
-          node.updateNumOfVisits();
+		}
+
 
 		}
 	}
-	}
+
 
 	
 
