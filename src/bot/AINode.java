@@ -56,4 +56,8 @@ public class AINode {
     public int getNumOfVisits(){
         return this.numOfVisits;
     }
+    
+    public BotState getState() {
+		return this.state;
+	}
 }
