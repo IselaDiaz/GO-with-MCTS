@@ -77,7 +77,7 @@ public class MCTS {
 	public int rollOut(AINode stateNode){
 
 		while(!processor.hasGameEnded(stateNode)) {
-			Move move=randomMove(stateNode);
+			Move move=stateNode.randomMove();
 			stateNode=processor.createNextStateFromMove(stateNode, move.toString());
 		}
 		return processor.getWinnerId(stateNode.getState());

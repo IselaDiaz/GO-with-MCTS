@@ -1,15 +1,17 @@
 package bot;
 
 import move.Move;
-import node.Node;
+//import node.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
-import processor.GoProcessor;
+//import processor.GoProcessor;
 public class AINode {
-
+	private Random random= new Random();
+	
     BotState state;
     ArrayList<Move> availableMoves;
     ArrayList<Move> remainingMoves;
