@@ -49,7 +49,7 @@ def best_child(node):
 	
 	
 	
-	public Node()
+	//public Node()
 	
 	public int playout(Node stateNode) {
 		
