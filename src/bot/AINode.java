@@ -17,7 +17,6 @@ public class AINode {
         this.state = state;
         this.parent = parent;
         setAvailableMoves();
-        setChildren();
     }
 
     public void setAvailableMoves(){
