@@ -19,6 +19,7 @@
 
 package processor;
 
+import java.util.ArrayList;
 //import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,6 +28,8 @@ import java.util.Set;
 import bot.BotState;
 import goMove.GoMove;
 import goMove.GoMoveDeserializer;
+import io.riddles.go.game.state.GoPlayerState;
+import io.riddles.go.game.state.GoState;
 import node.AINode;
 //import node.Node;
 import player.Player;
@@ -149,4 +152,62 @@ public class GoProcessor{
         
         return winnerId;
     }
+    
+    
+   /* 
+    public Integer getWinnerId(BotState state) {
+        HashMap<String,Player> players = state.getPlayers();
+        double scorePlayer0=0;
+        double scorePlayer1=0;
+        Integer winnerId = null;
+        
+        
+        Set<String> playersString=players.keySet();
+        
+        Iterator<String> iterator = playersString.iterator();
+        while(iterator.hasNext()) {
+        	Player player=players.get(iterator.next());
+        	int playerId=getIdFromPlayer(player,state);
+			if(playerId==0)
+        		scorePlayer0 = player.getPoints()+7.5;//komi
+        	else
+        		scorePlayer1 = player.getPoints();
+        }
+
+        if (scorePlayer0 > scorePlayer1) winnerId = 0;
+        if (scorePlayer1 > scorePlayer0) winnerId = 1;
+        
+        return winnerId;
+    }
+    
+    
+    
+    public Integer getWinnerId(GoState state) {
+        ArrayList<GoPlayerState> playerStates = state.getPlayerStates();
+        Integer winnerId = null;
+        double scorePlayer0 = logic.calculateScore(state.getBoard(), playerStates.get(0).getPlayerId());
+        double scorePlayer1 = logic.calculateScore(state.getBoard(), playerStates.get(1).getPlayerId());
+        //System.out.println("scorePlayer0 " +scorePlayer0 + " scorePlayer1 " + scorePlayer1);
+
+        if (logic.isBoardFull(state.getBoard())) {
+
+            if (scorePlayer0 > scorePlayer1) winnerId = playerStates.get(0).getPlayerId();
+            if (scorePlayer1 > scorePlayer0) winnerId = playerStates.get(1).getPlayerId();
+            return winnerId;
+        }
+
+        if (state.isDoublePass()) {
+
+            if (scorePlayer0 > scorePlayer1) winnerId = playerStates.get(0).getPlayerId();
+            if (scorePlayer1 > scorePlayer0) winnerId = playerStates.get(1).getPlayerId();
+            return winnerId;
+
+        }
+        if (scorePlayer0 > scorePlayer1) return playerStates.get(0).getPlayerId();
+        if (scorePlayer1 > scorePlayer0) return playerStates.get(1).getPlayerId();
+        return null;
+    }*/
+    
+    
+    
 }
