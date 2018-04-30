@@ -128,7 +128,7 @@ public class GoProcessor{
         HashMap<String,Player> players = state.getPlayers();
         double scorePlayer0=0;
         double scorePlayer1=0;
-        Integer winnerId = -1;
+        Integer winnerId = Integer.MIN_VALUE;
 
 
         //System.out.println("winID " +winnerId);
@@ -136,16 +136,23 @@ public class GoProcessor{
         
         Iterator<String> iterator = playersString.iterator();
         while(iterator.hasNext()) {
+            //System.out.println("in get winner id while loop " );
         	Player player=players.get(iterator.next());
+            //System.out.println("player  " +player);
         	int playerId=getIdFromPlayer(player,state);
-			if(playerId==0)
-        		scorePlayer0 = player.getPoints()+7.5;//komi
-        	else
-        		scorePlayer1 = player.getPoints();
+            //System.out.println("playerId" +playerId);
+			if(playerId==0) {
+                scorePlayer0 = player.getPoints() + 7.5;//komi
+                System.out.println("player 0 score " + scorePlayer0);
+            }
+        	else {
+                scorePlayer1 = player.getPoints();
+                System.out.println("player 1 score " + scorePlayer1);
+            }
         }
-
-        if (scorePlayer0 > scorePlayer1) {winnerId = 0;};
-        if (scorePlayer1 > scorePlayer0) {winnerId = 1;};
+        //System.out.println("player 1 score " +scorePlayer1);
+        if (scorePlayer0 > scorePlayer1) winnerId = 0;
+        if (scorePlayer1 > scorePlayer0) winnerId = 1;
         
         return winnerId;
     }

@@ -92,17 +92,18 @@ public class MCTS {
 	
 	public int rollOut(AINode stateNode){
         //System.out.println("i am in rollout");
-		while(!processor.hasGameEnded(stateNode)) {
+		/*while(!processor.hasGameEnded(stateNode)) {
 			Move move=stateNode.randomMove();
 			stateNode=processor.createNextStateFromMove(stateNode, move.toString());
             //System.out.println("stateNode " +stateNode);
 		}
         //System.out.println("i am done rolling out");
-        Integer winID = Integer.valueOf(processor.getWinnerId(stateNode.getState()));
+        Integer winID = processor.getWinnerId(stateNode.getState());
+		//System.out.println(" " +winID);
         //System.out.println("winID " +winID);
-		return processor.getWinnerId(stateNode.getState());
-		//Random r = new Random();
-		//return r.nextInt(2);
+		//return processor.getWinnerId(stateNode.getState());*/
+		Random r = new Random();
+		return r.nextInt(2);
 	}
 
 
