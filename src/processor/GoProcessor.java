@@ -28,8 +28,8 @@ import java.util.Set;
 import bot.BotState;
 import goMove.GoMove;
 import goMove.GoMoveDeserializer;
-import io.riddles.go.game.state.GoPlayerState;
-import io.riddles.go.game.state.GoState;
+//import io.riddles.go.game.state.GoPlayerState;
+//import io.riddles.go.game.state.GoState;
 import node.AINode;
 //import node.Node;
 import player.Player;
@@ -147,8 +147,8 @@ public class GoProcessor{
         		scorePlayer1 = player.getPoints();
         }
 
-        if (scorePlayer0 > scorePlayer1) {winnerId = 0;};
-        if (scorePlayer1 > scorePlayer0) {winnerId = 1;};
+        if (scorePlayer0 > scorePlayer1) {winnerId = 0;}
+        if (scorePlayer1 > scorePlayer0) {winnerId = 1;}
         
         return winnerId;
     }
