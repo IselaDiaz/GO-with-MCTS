@@ -1,5 +1,6 @@
 package MCTS;
 
+import bot.BotStarter;
 import bot.BotState;
 import bot.BotParser;
 import goMove.GoMove;
@@ -13,11 +14,13 @@ import java.util.Random;
 
 public class MCTS {
 	GoProcessor processor = new GoProcessor();
-
-
+    BotState currentBoardState ;
+    public MCTS (BotState currentBoardState) {
+        this.currentBoardState = currentBoardState;
+    }
 	public GoMove selectMove() {
         //System.out.println("im in selectMove");
-		BotState currentBoardState = BotParser.currentState;
+
 		int timeBank = currentBoardState.getTimebank();
 		int maxRounds = currentBoardState.getMaxRounds();
 		int roundNumber = currentBoardState.getRoundNumber();
@@ -63,8 +66,7 @@ public class MCTS {
 		double bestValue = Double.MIN_VALUE;
 		for (AINode child : currNode.getChildArray()) {
 			double uctValue = child.getTotalScore() / (child.getNumOfVisits() + epsilon) +
-					Math.sqrt(Math.log(child.getNumOfVisits()+1) / (child.getNumOfVisits() + epsilon)) +
-					r.nextDouble() * epsilon;
+					Math.sqrt(Math.log(child.getNumOfVisits()+1) / (child.getNumOfVisits() + epsilon)) ;
 			// small random number to break ties randomly in unexpanded nodes
 			if (uctValue > bestValue) {
 				selected = child;
@@ -91,8 +93,8 @@ public class MCTS {
 	
 	
 	public int rollOut(AINode stateNode){
-        //System.out.println("i am in rollout");
-		/*while(!processor.hasGameEnded(stateNode)) {
+        /*//System.out.println("i am in rollout");
+		while(!processor.hasGameEnded(stateNode)) {
 			Move move=stateNode.randomMove();
 			stateNode=processor.createNextStateFromMove(stateNode, move.toString());
             //System.out.println("stateNode " +stateNode);
@@ -101,7 +103,7 @@ public class MCTS {
         Integer winID = processor.getWinnerId(stateNode.getState());
 		//System.out.println(" " +winID);
         //System.out.println("winID " +winID);
-		//return processor.getWinnerId(stateNode.getState());*/
+		return processor.getWinnerId(stateNode.getState());*/
 		Random r = new Random();
 		return r.nextInt(2);
 	}

@@ -38,7 +38,7 @@ public class BotParser {
 
 	private Scanner scan;
 	public BotStarter bot;
-	public static BotState currentState;
+	public BotState currentState;
 
 	BotParser(BotStarter bot) {
 		this.scan = new Scanner(System.in);

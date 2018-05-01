@@ -44,7 +44,7 @@ public class BotStarter {
      * @return A Move object
      */
     public Move doMove(BotState state) {
-    	MCTS decisionMaking = new MCTS();
+    	MCTS decisionMaking = new MCTS(state);
     	GoMove bestMove= decisionMaking.selectMove();
     	return bestMove.getCoordinate();
     }
