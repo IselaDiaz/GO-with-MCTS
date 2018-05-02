@@ -121,15 +121,16 @@ public class MCTS {
 		//System.out.println(printing);
 		while(!processor.hasGameEnded(stateNode)) {
 			//System.out.println("here ");
-			if(stateNode.getLastGoodReply()!= null){
-				Move move = stateNode.getLastGoodReply().getCoordinate();
-				stateNode=processor.createNextStateFromMove(stateNode, move.toString());
-			}
-			else {
-				Move move = stateNode.randomMove();
+			Move move;
+			if(stateNode.getLastGoodReply()!= null)//{
+				move = stateNode.getLastGoodReply().getCoordinate();
+				//stateNode=processor.createNextStateFromMove(stateNode, move.toString());
+			//}
+			else
+				move = stateNode.randomMove();
 				//str+=move.toString()+" ";
-				stateNode = processor.createNextStateFromMove(stateNode, move.toString());
-			}
+			stateNode = processor.createNextStateFromMove(stateNode, move.toString());
+			
 			//System.out.println("here ");
 			//c++;
             //System.out.println("stateNode " +stateNode);

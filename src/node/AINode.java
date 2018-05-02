@@ -35,6 +35,7 @@ public class AINode {
         this.action = action;
         totalScore = 0;
         numOfVisits = 0;
+        lastGoodAction=null;
     }
 
     /*public void setAvailableMoves() {
