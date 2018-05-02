@@ -52,7 +52,7 @@ public class MCTS {
             //System.out.println("im in first while");
 			AINode currNode = rootNode;
 			//visited.add(currNode);
-
+			System.out.println("im in first while" + currNode);
             while (!currNode.getRemainingMoves().isEmpty()){
                 //System.out.println("im in second while ");
             	currNode = selectWithUCT(currNode);   //Selection with UCT

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="GO-with-MCTS">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/GO_with_MCTS_jar/GO-with-MCTS.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
