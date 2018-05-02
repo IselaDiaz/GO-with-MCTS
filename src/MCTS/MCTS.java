@@ -116,15 +116,22 @@ public class MCTS {
 		int c=0;
 		String str=new String();
 		//System.out.println(!processor.hasGameEnded(stateNode));
+		AINode rollOutRootNode = stateNode;
 		boolean f=!processor.hasGameEnded(stateNode);
 		//System.out.println(printing);
 		while(!processor.hasGameEnded(stateNode)) {
 			//System.out.println("here ");
-			Move move=stateNode.randomMove();
-			//str+=move.toString()+" ";
-			stateNode=processor.createNextStateFromMove(stateNode, move.toString());
+			if(stateNode.getLastGoodReply()!= null){
+				Move move = stateNode.getLastGoodReply().getCoordinate();
+				stateNode=processor.createNextStateFromMove(stateNode, move.toString());
+			}
+			else {
+				Move move = stateNode.randomMove();
+				//str+=move.toString()+" ";
+				stateNode = processor.createNextStateFromMove(stateNode, move.toString());
+			}
 			//System.out.println("here ");
-			c++;
+			//c++;
             //System.out.println("stateNode " +stateNode);
 		}
 		//System.out.println(printing+"  "+c);
@@ -132,6 +139,7 @@ public class MCTS {
 		//System.out.println(str);
         //System.out.println("i am done rolling out");
         Integer winID = processor.getWinnerId(stateNode.getState());
+		backpropagateLastGoodReply(rollOutRootNode, stateNode, stateNode.getAction(), winID);
 		//System.out.println(" " +winID);
         //printing+="  "+"winId "+winID;
         //System.out.println(printing+" "+a);
@@ -142,11 +150,6 @@ public class MCTS {
 	}
 
 
-		
-
-	
-	
-	
 	public void backpropagate(AINode node, int winID){
 		//AINode node = node ;
 		//printing+="score "+node.getTotalScore()+"no visits "+node.getNumOfVisits()+"parent "+node.getParent()+" ";
@@ -157,6 +160,14 @@ public class MCTS {
 			node = node.getParent();
 		}
 		}
+	public void backpropagateLastGoodReply(AINode rollOutRootNode, AINode stateNode, GoMove action, int winID){
+		//AINode parentNode = stateNode.getParent();
+    	while(stateNode!= rollOutRootNode  ) {
+    		if(stateNode.getParent().getLastGoodReply() != action) {
+				stateNode.getParent().updateLastGoodReply(action, winID);
+			}
+		}
+	}
 	}
 
 

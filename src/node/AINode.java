@@ -13,8 +13,8 @@ import goMove.GoMove;
 
 //import processor.GoProcessor;
 public class AINode {
-	private Random random= new Random();
-	
+    private Random random = new Random();
+
     BotState state;
     //ArrayList<Move> availableMoves;
     ArrayList<Move> remainingMoves;
@@ -24,16 +24,17 @@ public class AINode {
     int totalScore;
     int numOfVisits;
     GoMove action;
+    GoMove lastGoodAction;
 
-    public AINode(BotState state, AINode parent,GoMove action) {
+    public AINode(BotState state, AINode parent, GoMove action) {
         this.state = state;
         this.parent = parent;
         //setAvailableMoves();
         //this.playerID = state.getBoard().getMyId();
         setRemainingMoves();
-        this.action=action;
-        totalScore=0;
-        numOfVisits=0;
+        this.action = action;
+        totalScore = 0;
+        numOfVisits = 0;
     }
 
     /*public void setAvailableMoves() {
@@ -62,8 +63,8 @@ public class AINode {
              this.children.add(childNode);
          });
      }*/
-    
-    
+
+
     public Move getRandomAction() {
         int noOfPossibleMoves = this.remainingMoves.size();
         int selectRandom = (int) (Math.random() * ((noOfPossibleMoves - 1) + 1));
@@ -72,20 +73,20 @@ public class AINode {
         return mov;
     }
 
-	public Move randomMove() {
-		ArrayList <Move> availableMoves = state.getBoard().getAvailableMoves();
-    	int moveCount = availableMoves.size();
+    public Move randomMove() {
+        ArrayList<Move> availableMoves = state.getBoard().getAvailableMoves();
+        int moveCount = availableMoves.size();
 
-    	if (moveCount <= 0) {
-    		return null;
-		}
+        if (moveCount <= 0) {
+            return null;
+        }
 
-    	return availableMoves.get(this.random.nextInt(moveCount));
+        return availableMoves.get(this.random.nextInt(moveCount));
     }
-	
+
     public boolean addChildtoArray(AINode childNode) {
         //System.out.println("im in addChildtoArray ");
-         boolean added = this.childArray.add(childNode);
+        boolean added = this.childArray.add(childNode);
 
         //System.out.println(added);
         //System.out.println("done adding Child ");
@@ -100,10 +101,10 @@ public class AINode {
     public AINode getParent() {
         return this.parent;
     }
-    
+
     public boolean hasParent() {
-		return parent!=null;
-	}
+        return parent != null;
+    }
 
     public void updateTotalScore(int winID) {
         if (this.state.getBoard().getMyId() == winID)
@@ -128,7 +129,7 @@ public class AINode {
 
     public AINode getChildWithMaxScore() {
         //return Collections.max(this.childArray, Comparator.comparing(AINode::getNumOfVisits));
-    	return this.childArray.stream().max(Comparator.comparing(AINode::getNumOfVisits)).get();
+        return this.childArray.stream().max(Comparator.comparing(AINode::getNumOfVisits)).get();
         /*int bestValue = Integer.MIN_VALUE;
         AINode bestChild ;
         for (AINode child : childArray) {
@@ -139,8 +140,18 @@ public class AINode {
             return bestChild;*/
 
     }
-    
-    public GoMove getAction(){
+
+    public GoMove getAction() {
         return this.action;
     }
+
+    public void updateLastGoodReply(GoMove action, int winID) {
+        if (this.state.getBoard().getMyId() == winID) {
+            this.lastGoodAction = action;
+        }
+    }
+    public GoMove getLastGoodReply() {
+        return this.lastGoodAction;
+    }
+
 }
