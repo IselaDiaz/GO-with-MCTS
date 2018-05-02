@@ -7,9 +7,11 @@ import goMove.GoMove;
 import move.Move;
 import node.AINode;
 import processor.GoProcessor;
+import board.Board;
 
 //import java.util.LinkedList;
 //import java.util.List;
+import java.util.HashMap;
 import java.util.Random;
 
 public class MCTS {
@@ -19,6 +21,7 @@ public class MCTS {
 	
 	GoProcessor processor = new GoProcessor();
     BotState currentBoardState ;
+	HashMap<String, GoMove > lastGoodReply = new HashMap<>();
     public MCTS (BotState currentBoardState) {
         this.currentBoardState = currentBoardState;
     }
@@ -50,7 +53,7 @@ public class MCTS {
 			AINode currNode = rootNode;
 			//visited.add(currNode);
 
-            while (currNode.getRemainingMoves().size() == 0){
+            while (!currNode.getRemainingMoves().isEmpty()){
                 //System.out.println("im in second while ");
             	currNode = selectWithUCT(currNode);   //Selection with UCT
 			}
@@ -79,10 +82,10 @@ public class MCTS {
 
 
 	public AINode selectWithUCT(AINode currNode){
-		double epsilon = 1e-6;
+		//double epsilon = 1e-6;
 		Random r = new Random();
 		AINode selected = null;
-		double bestValue = Double.MIN_VALUE;
+		double bestValue = -1;
 		for (AINode child : currNode.getChildArray()) {
 			double uctValue = child.getTotalScore() / (child.getNumOfVisits()/* + epsilon*/) +
 					Math.sqrt(Math.log(child.getNumOfVisits()/*+1*/) / (child.getNumOfVisits()/* + epsilon*/)) ;
@@ -121,14 +124,17 @@ public class MCTS {
 		//System.out.println(printing);
 		while(!processor.hasGameEnded(stateNode)) {
 			//System.out.println("here ");
+			GoMove gomove;
 			Move move;
-			if(stateNode.getLastGoodReply()!= null)//{
-				move = stateNode.getLastGoodReply().getCoordinate();
+			String fieldStr = stateNode.getState().getBoard().field.toString();
+			if(lastGoodReply.containsKey(fieldStr)){
+				gomove = lastGoodReply.get(fieldStr);
+			    move = gomove.getCoordinate();
 				//stateNode=processor.createNextStateFromMove(stateNode, move.toString());
-			//}
-			else
-				move = stateNode.randomMove();
+			}
+			else move = stateNode.randomMove();
 				//str+=move.toString()+" ";
+
 			stateNode = processor.createNextStateFromMove(stateNode, move.toString());
 			
 			//System.out.println("here ");
@@ -140,7 +146,7 @@ public class MCTS {
 		//System.out.println(str);
         //System.out.println("i am done rolling out");
         Integer winID = processor.getWinnerId(stateNode.getState());
-		backpropagateLastGoodReply(rollOutRootNode, stateNode, stateNode.getAction(), winID);
+		lastGoodReplyFunc(rollOutRootNode, stateNode, stateNode.getAction(), winID);
 		//System.out.println(" " +winID);
         //printing+="  "+"winId "+winID;
         //System.out.println(printing+" "+a);
@@ -161,12 +167,21 @@ public class MCTS {
 			node = node.getParent();
 		}
 		}
-	public void backpropagateLastGoodReply(AINode rollOutRootNode, AINode stateNode, GoMove action, int winID){
-		//AINode parentNode = stateNode.getParent();
+	public void lastGoodReplyFunc(AINode rollOutRootNode, AINode stateNode, GoMove action, int winID){
+		// parentNode = stateNode.getParent();
     	while(stateNode!= rollOutRootNode  ) {
-    		if(stateNode.getParent().getLastGoodReply() != action) {
-				stateNode.getParent().updateLastGoodReply(action, winID);
+			String [] [] fieldArr = stateNode.getParent().getState().getBoard().field;
+			String fieldStr = fieldArr.toString();
+    		if(stateNode.getParent().getState().getBoard().getMyId() == winID) {
+				if(!lastGoodReply.containsKey(fieldStr)) lastGoodReply.put(fieldStr,action);
+				//stateNode.getParent().updateLastGoodReply(action, winID)
+				else lastGoodReply.replace(fieldStr, action);
 			}
+			else {
+    			lastGoodReply.remove(fieldStr);
+			}
+
+			stateNode = stateNode.getParent();
 		}
 	}
 	}
