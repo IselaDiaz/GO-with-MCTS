@@ -84,8 +84,8 @@ public class MCTS {
 		AINode selected = null;
 		double bestValue = Double.MIN_VALUE;
 		for (AINode child : currNode.getChildArray()) {
-			double uctValue = child.getTotalScore() / (child.getNumOfVisits() + epsilon) +
-					Math.sqrt(Math.log(child.getNumOfVisits()+1) / (child.getNumOfVisits() + epsilon)) ;
+			double uctValue = child.getTotalScore() / (child.getNumOfVisits()/* + epsilon*/) +
+					Math.sqrt(Math.log(child.getNumOfVisits()/*+1*/) / (child.getNumOfVisits()/* + epsilon*/)) ;
 			// small random number to break ties randomly in unexpanded nodes
 			if (uctValue > bestValue) {
 				selected = child;
