@@ -126,7 +126,7 @@ public class GoProcessor{
     	BotState state=stateNode.getState();
     	//MCTS.printing+=state.getRoundNumber()+" "+state.getMaxRounds();
     	//System.out.println("Game ended?");
-        if (state.getRoundNumber() >= state.getMaxRounds()) {
+        if (state.getRoundNumber() >= /*50*/state.getMaxRounds()) {
         	//MCTS.printing+="TRUE ";
         	return true;
         }
