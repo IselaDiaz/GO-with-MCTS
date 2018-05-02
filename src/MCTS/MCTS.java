@@ -13,6 +13,10 @@ import processor.GoProcessor;
 import java.util.Random;
 
 public class MCTS {
+	
+	public static String printing=new String();
+	public static int a;
+	
 	GoProcessor processor = new GoProcessor();
     BotState currentBoardState ;
     public MCTS (BotState currentBoardState) {
@@ -28,12 +32,14 @@ public class MCTS {
 		double computationalTimePerMove = timeBank/(maxRounds-roundNumber+1);
         //System.out.println("comptime " +computationalTimePerMove);
 		long start = System.currentTimeMillis();
+		long startNano=System.nanoTime();
 		long end = (long) (start + computationalTimePerMove);
-		//System.out.println("start " +start);
+		long endNano=(long)(startNano+computationalTimePerMove*1e6);
+		//System.out.println("start " +start+" end "+end);
         //System.out.println("end " +end);
 		AINode rootNode = new AINode(currentBoardState, null, null);
-		while (System.currentTimeMillis() < end)  {
-
+		//while (System.currentTimeMillis() < end)  {
+		while (System.nanoTime()-endNano<500000) {
             //System.out.println("im in first while");
 			AINode currNode = rootNode;
 			//visited.add(currNode);
@@ -51,6 +57,7 @@ public class MCTS {
 			int winId = rollOut(newNode);
             //System.out.println("winID " +winId);
 			backpropagate(newNode, winId);
+			System.out.println(printing);
 		}
         //System.out.println("i came out selectmove");
 		AINode bestNode = rootNode.getChildWithMaxScore();
@@ -93,19 +100,33 @@ public class MCTS {
 	
 	
 	public int rollOut(AINode stateNode){
-        /*//System.out.println("i am in rollout");
+        //System.out.println("i am in rollout");
+		int c=0;
+		String str=new String();
+		//System.out.println(!processor.hasGameEnded(stateNode));
+		boolean f=!processor.hasGameEnded(stateNode);
+		//System.out.println(printing);
 		while(!processor.hasGameEnded(stateNode)) {
+			//System.out.println("here ");
 			Move move=stateNode.randomMove();
+			//str+=move.toString()+" ";
 			stateNode=processor.createNextStateFromMove(stateNode, move.toString());
+			//System.out.println("here ");
+			c++;
             //System.out.println("stateNode " +stateNode);
 		}
+		//System.out.println(printing+"  "+c);
+		//System.out.println(c);
+		//System.out.println(str);
         //System.out.println("i am done rolling out");
         Integer winID = processor.getWinnerId(stateNode.getState());
 		//System.out.println(" " +winID);
+        //printing+="  "+"winId "+winID;
+        //System.out.println(printing+" "+a);
         //System.out.println("winID " +winID);
-		return processor.getWinnerId(stateNode.getState());*/
-		Random r = new Random();
-		return r.nextInt(2);
+		return processor.getWinnerId(stateNode.getState());
+		/*Random r = new Random();
+		return r.nextInt(2);*/
 	}
 
 
@@ -116,11 +137,12 @@ public class MCTS {
 	
 	public void backpropagate(AINode node, int winID){
 		//AINode node = node ;
+		//printing+="score "+node.getTotalScore()+"no visits "+node.getNumOfVisits()+"parent "+node.getParent()+" ";
 		while(node.getParent() != null){
 			node.updateTotalScore(winID);
 			node.updateNumOfVisits();
+			//printing+="score "+node.getTotalScore()+"no visits "+node.getNumOfVisits()+"parent "+node.getParent();
 			node = node.getParent();
-
 		}
 		}
 	}

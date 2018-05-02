@@ -142,7 +142,6 @@ public class BotState {
         Clone.setPlayers(this.players);
         Clone.setBoard(this.board.clone());
         //Clone.
-        
         return Clone;
     }
     
@@ -160,8 +159,8 @@ public class BotState {
         		break;
         	}
         }
-
+        int oldMyId=this.board.getMyId();
 		this.board.setMyId(this.board.getOpponentId());
-		this.board.setOpponentId(this.board.getMyId());
+		this.board.setOpponentId(oldMyId);
     }
 }

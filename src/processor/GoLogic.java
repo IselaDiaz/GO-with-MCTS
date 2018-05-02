@@ -19,6 +19,8 @@
 
 package processor;
 
+import MCTS.MCTS;
+
 import board.Board;
 import bot.BotState;
 import goMove.GoMove;
@@ -55,11 +57,15 @@ public class GoLogic {
     private void transformPlaceMove(BotState state, GoMove move) {
     	Board board = state.getBoard();
     	int playerId=board.getMyId();
+    	
+    	//MCTS.printing+=String.valueOf(playerId)+" ";
+    	
         Move point = move.getCoordinate();
 
         String[][] originalBoard = getBoardArray(board);
 
         board.setFieldAt(point, String.valueOf(playerId));
+        
         //board.setLastPosition(point);
 
         int stonesTaken = checkCaptures(board, playerId);
@@ -118,7 +124,7 @@ public class GoLogic {
         return stonesTaken;
     }
 
-    private Boolean checkSuicideRule(Board board, Move p, String move) {
+    private Boolean checkSuicideRule(Board board, Move p, String myPlayerId) {
         mFoundLiberties = 0;
         boolean[][] mark = new boolean[board.getWidth()][board.getHeight()];
         for (int tx = 0; tx < board.getWidth(); tx++) {
@@ -127,16 +133,16 @@ public class GoLogic {
                 mark[tx][ty] = false;
             }
         }
-        flood(board, mark, new Point(p.getX(),p.getY()), move, 0);
-        return (mFoundLiberties > 0);
+        flood(board, mark, new Point(p.getX(),p.getY()), myPlayerId, 0);
+        return (mFoundLiberties == 0);
     }
 
     public boolean isBoardFull(Board board) {
         for(int y = 0; y < board.getHeight(); y++)
             for(int x = 0; x < board.getWidth(); x++)
-                for (int playerId = 1; playerId <= 2; playerId++)
-                    if (board.getFieldAt(new Point(x,y)).equals(Board.EMPTY_FIELD) && //should i add -1?
-                            checkSuicideRule(board, new Move(x,y), String.valueOf(playerId)))
+                for (int playerId = 0; playerId <= 1; playerId++)
+                    if ((board.getFieldAt(new Point(x,y)).equals(Board.EMPTY_FIELD) || board.getFieldAt(new Point(x,y)).equals("-1"))//should i add -1?
+                            && !checkSuicideRule(board, new Move(x,y), String.valueOf(playerId)))
                         return false;
         // No move can be played
         return true;
@@ -222,7 +228,7 @@ public class GoLogic {
 
         // Make sure this field is the right color to fill
         if (!board.getFieldAt(p).equals(srcColor)) {
-            if (board.getFieldAt(p).equals(Board.EMPTY_FIELD)) {
+            if (board.getFieldAt(p).equals(Board.EMPTY_FIELD) || board.getFieldAt(p).equals("-1")) {
                 mFoundLiberties++;
             }
             return;

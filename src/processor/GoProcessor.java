@@ -20,6 +20,9 @@
 package processor;
 
 //import java.util.ArrayList;
+
+import MCTS.MCTS;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -88,23 +91,25 @@ public class GoProcessor{
         while(iterator.hasNext()) {
         	Player player=nextState.getPlayers().get(iterator.next());
         	score=logic.calculateScore(nextState.getBoard(), getIdFromPlayer(player,nextState));//add komi?
+        	//MCTS.printing+="Player"+String.valueOf(getIdFromPlayer(player,nextState))+" "+score+" ";
         	player.setPoints(score);
         }
 
         //change rounds?
         updateRoundNumber(nextState);
-        
+        //MCTS.printing+=String.valueOf(nextState.getRoundNumber())+" ";
         //alternating? more stuff to change
         nextStateNode.getState().changePlayer();
+        //MCTS.printing+=String.valueOf(nextState.getMyName());
         //nextStateNode.setAvailableMoves();
         nextStateNode.setRemainingMoves();
-        
+        //MCTS.printing+="I come out ";
         return nextStateNode;
     }
 
     
     public void updateRoundNumber(BotState state) {
-    	if(state.getBoard().getMyId()!=0)
+    	if(state.getBoard().getMyId()==1)
     		state.setRoundNumber(state.getRoundNumber()+1);
     }
     
@@ -119,7 +124,13 @@ public class GoProcessor{
 
     public boolean hasGameEnded(AINode stateNode) {
     	BotState state=stateNode.getState();
-        if (state.getRoundNumber() >= state.getMaxRounds()) return true;
+    	//MCTS.printing+=state.getRoundNumber()+" "+state.getMaxRounds();
+    	//System.out.println("Game ended?");
+        if (state.getRoundNumber() >= state.getMaxRounds()) {
+        	//MCTS.printing+="TRUE ";
+        	return true;
+        }
+        //MCTS.printing+=logic.isBoardFull(state.getBoard())+" "+logic.detectKo(stateNode);
         return logic.isBoardFull(state.getBoard()) || logic.detectKo(stateNode);
     }
 
@@ -135,19 +146,24 @@ public class GoProcessor{
         Set<String> playersString=players.keySet();
         
         Iterator<String> iterator = playersString.iterator();
+        MCTS.a=0;
         while(iterator.hasNext()) {
+        	//MCTS.a++;
             //System.out.println("in get winner id while loop " );
         	Player player=players.get(iterator.next());
             //System.out.println("player  " +player);
         	int playerId=getIdFromPlayer(player,state);
             //System.out.println("playerId" +playerId);
 			if(playerId==0) {
-                scorePlayer0 = player.getPoints() + 7.5;//komi
-                System.out.println("player 0 score " + scorePlayer0);
+                scorePlayer0 = player.getPoints();
+                //System.out.println("player 0 score " + scorePlayer0);
+                //MCTS.printing+="player 0 score " + scorePlayer0+" ";
             }
         	else {
-                scorePlayer1 = player.getPoints();
-                System.out.println("player 1 score " + scorePlayer1);
+                scorePlayer1 = player.getPoints()+7.5;//komi
+                //System.out.println("player 1 score " + scorePlayer1);
+                MCTS.a++;
+                //MCTS.printing+="player 1 score " + scorePlayer1+" ";
             }
         }
         //System.out.println("player 1 score " +scorePlayer1);
