@@ -47,6 +47,8 @@ public class BotStarter {
     	MCTS decisionMaking = new MCTS(state);
     	GoMove bestMove= decisionMaking.selectMove();
     	return bestMove.getCoordinate();
+    	//System.out.println("domove");
+    	//return null;
     }
 
  	public static void main(String[] args) {

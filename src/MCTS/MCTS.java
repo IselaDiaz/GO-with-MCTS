@@ -37,9 +37,15 @@ public class MCTS {
 		long endNano=(long)(startNano+computationalTimePerMove*1e6);
 		//System.out.println("start " +start+" end "+end);
         //System.out.println("end " +end);
+		double startNano1=startNano/1e6;
+		double endNano1=endNano/1e6;
+		//System.out.println("startNano "+startNano+"endNano "+endNano);
+		//System.out.println("startNano "+startNano1+" endNano "+endNano1+" start "+start+" end"+end);
 		AINode rootNode = new AINode(currentBoardState, null, null);
 		//while (System.currentTimeMillis() < end)  {
+		//System.out.println(System.nanoTime()-endNano);
 		while (System.nanoTime()-endNano<500000) {
+			//System.out.println(System.nanoTime()-endNano);
             //System.out.println("im in first while");
 			AINode currNode = rootNode;
 			//visited.add(currNode);
@@ -48,21 +54,27 @@ public class MCTS {
                 //System.out.println("im in second while ");
             	currNode = selectWithUCT(currNode);   //Selection with UCT
 			}
-
+            MCTS.printing+="after selection "+String.valueOf(System.nanoTime())+" ";
             AINode newNode = expand(currNode);
+            MCTS.printing+="after expansion "+String.valueOf(System.nanoTime())+" ";
             //System.out.println(newNode);
             //System.out.println("i came out after expand");
             //AINode newNode = selectWithUCT(currNode) ;
             //visited.add(newNode);
 			int winId = rollOut(newNode);
+			MCTS.printing+="after rollout "+String.valueOf(System.nanoTime())+" ";
             //System.out.println("winID " +winId);
 			backpropagate(newNode, winId);
-			System.out.println(printing);
+			//System.out.println(printing);
+			MCTS.printing+="after backprop "+String.valueOf(System.nanoTime())+" ";
 		}
+		//System.out.println("startNano "+startNano1+" endNano "+endNano1+" start "+start+" end "+end+" finalTimeNano "+System.nanoTime()+" finalTime "+System.currentTimeMillis());
+		//System.out.println("startNano "+startNano1+" endNano "+endNano1+" times "+MCTS.printing);
         //System.out.println("i came out selectmove");
 		AINode bestNode = rootNode.getChildWithMaxScore();
 		GoMove bestMove = bestNode.getAction();
 		return bestMove;
+		//return null;
 	}
 
 
