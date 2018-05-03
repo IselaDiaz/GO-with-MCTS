@@ -67,15 +67,12 @@ public class BotParser {
 				case "action":
 					if (parts[1].equals("move")) { /* move requested */
 						this.currentState.setTimebank(Integer.parseInt(parts[2]));
-						//System.out.println("before move");
 						Move move = this.bot.doMove(this.currentState);
-						//System.out.println("before if");
+
 						if (move != null) {
 							System.out.println(move.toString());
-							//System.out.println("not null");
 						} else {
 							System.out.println("pass");
-							//System.out.println("null");
 						}
 					}
 					break;
