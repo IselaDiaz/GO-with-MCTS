@@ -7,10 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd9b869e-7a39-4f64-b038-d27b7a0857d4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/GO_with_MCTS_jar/GO-with-MCTS.jar" afterPath="$PROJECT_DIR$/out/artifacts/GO_with_MCTS_jar/GO-with-MCTS.jar" />
-      <change beforePath="$PROJECT_DIR$/src/MCTS/MCTS.java" afterPath="$PROJECT_DIR$/src/MCTS/MCTS.java" />
-      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterPath="" />
       <change beforePath="$PROJECT_DIR$/src/node/AINode.java" afterPath="$PROJECT_DIR$/src/node/AINode.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -33,21 +29,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MCTS.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MCTS.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MCTS/MCTS.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-524">
+            <state relative-caret-position="-1306">
               <caret line="90" column="87" lean-forward="false" selection-start-line="90" selection-start-column="80" selection-end-line="90" selection-end-column="87" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AINode.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AINode.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/node/AINode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2142">
-              <caret line="155" column="7" lean-forward="false" selection-start-line="155" selection-start-column="7" selection-end-line="155" selection-end-column="7" />
+            <state relative-caret-position="159">
+              <caret line="111" column="25" lean-forward="true" selection-start-line="111" selection-start-column="25" selection-end-line="111" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -76,8 +72,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/node/AINode.java" />
         <option value="$PROJECT_DIR$/src/MCTS/MCTS.java" />
+        <option value="$PROJECT_DIR$/src/node/AINode.java" />
       </list>
     </option>
   </component>
@@ -309,12 +305,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1525308265157</updated>
-      <workItem from="1525308269322" duration="3396000" />
+      <workItem from="1525308269322" duration="3789000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3396000" />
+    <option name="totallyTimeSpent" value="3789000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
@@ -360,14 +356,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/node/AINode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2142">
-          <caret line="155" column="7" lean-forward="false" selection-start-line="155" selection-start-column="7" selection-end-line="155" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/bot/BotStarter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -378,8 +366,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MCTS/MCTS.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-524">
+        <state relative-caret-position="-1306">
           <caret line="90" column="87" lean-forward="false" selection-start-line="90" selection-start-column="80" selection-end-line="90" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/node/AINode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="111" column="25" lean-forward="true" selection-start-line="111" selection-start-column="25" selection-end-line="111" selection-end-column="25" />
           <folding />
         </state>
       </provider>
