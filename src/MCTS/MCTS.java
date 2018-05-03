@@ -22,6 +22,7 @@ public class MCTS {
 	GoProcessor processor = new GoProcessor();
     BotState currentBoardState ;
 	HashMap<String, GoMove > lastGoodReply = new HashMap<>();
+
     public MCTS (BotState currentBoardState) {
         this.currentBoardState = currentBoardState;
     }
@@ -32,7 +33,7 @@ public class MCTS {
 		int maxRounds = currentBoardState.getMaxRounds();
 		int roundNumber = currentBoardState.getRoundNumber();
         //System.out.println("timebank " +timeBank);
-		double computationalTimePerMove = timeBank/(maxRounds-roundNumber+1);
+		double computationalTimePerMove = timeBank/(maxRounds-roundNumber);
         //System.out.println("comptime " +computationalTimePerMove);
 		long start = System.currentTimeMillis();
 		long startNano=System.nanoTime();
@@ -47,29 +48,29 @@ public class MCTS {
 		AINode rootNode = new AINode(currentBoardState, null, null);
 		//while (System.currentTimeMillis() < end)  {
 		//System.out.println(System.nanoTime()-endNano);
-		while (System.nanoTime()-endNano<500000) {
+		while (System.nanoTime()-endNano<-500000) {
 			//System.out.println(System.nanoTime()-endNano);
             //System.out.println("im in first while");
 			AINode currNode = rootNode;
 			//visited.add(currNode);
-			System.out.println("im in first while" + currNode);
-            while (!currNode.getRemainingMoves().isEmpty()){
+			//System.out.println("im in first while" + currNode);
+            while (currNode.getRemainingMoves().isEmpty()){
                 //System.out.println("im in second while ");
             	currNode = selectWithUCT(currNode);   //Selection with UCT
 			}
-            MCTS.printing+="after selection "+String.valueOf(System.nanoTime())+" ";
+            //MCTS.printing+="after selection "+String.valueOf(System.nanoTime())+" ";
             AINode newNode = expand(currNode);
-            MCTS.printing+="after expansion "+String.valueOf(System.nanoTime())+" ";
+           // MCTS.printing+="after expansion "+String.valueOf(System.nanoTime())+" ";
             //System.out.println(newNode);
             //System.out.println("i came out after expand");
             //AINode newNode = selectWithUCT(currNode) ;
             //visited.add(newNode);
 			int winId = rollOut(newNode);
-			MCTS.printing+="after rollout "+String.valueOf(System.nanoTime())+" ";
+			//MCTS.printing+="after rollout "+String.valueOf(System.nanoTime())+" ";
             //System.out.println("winID " +winId);
 			backpropagate(newNode, winId);
 			//System.out.println(printing);
-			MCTS.printing+="after backprop "+String.valueOf(System.nanoTime())+" ";
+			//MCTS.printing+="after backprop "+String.valueOf(System.nanoTime())+" ";
 		}
 		//System.out.println("startNano "+startNano1+" endNano "+endNano1+" start "+start+" end "+end+" finalTimeNano "+System.nanoTime()+" finalTime "+System.currentTimeMillis());
 		//System.out.println("startNano "+startNano1+" endNano "+endNano1+" times "+MCTS.printing);
@@ -82,13 +83,13 @@ public class MCTS {
 
 
 	public AINode selectWithUCT(AINode currNode){
-		//double epsilon = 1e-6;
+		double epsilon = 1e-6;
 		Random r = new Random();
 		AINode selected = null;
 		double bestValue = -1;
 		for (AINode child : currNode.getChildArray()) {
-			double uctValue = child.getTotalScore() / (child.getNumOfVisits()/* + epsilon*/) +
-					Math.sqrt(Math.log(child.getNumOfVisits()/*+1*/) / (child.getNumOfVisits()/* + epsilon*/)) ;
+			double uctValue = child.getTotalScore() / (child.getNumOfVisits() + epsilon) +
+					Math.sqrt(Math.log(child.getNumOfVisits()+1) / (child.getNumOfVisits()+ epsilon)) ;
 			// small random number to break ties randomly in unexpanded nodes
 			if (uctValue > bestValue) {
 				selected = child;

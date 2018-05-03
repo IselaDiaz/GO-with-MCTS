@@ -146,13 +146,13 @@ public class AINode {
         return this.action;
     }
 
-    public void updateLastGoodReply(GoMove action, int winID) {
+   /* public void updateLastGoodReply(GoMove action, int winID) {
         if (this.state.getBoard().getMyId() == winID) {
             this.lastGoodAction = action;
         }
     }
     public GoMove getLastGoodReply() {
         return this.lastGoodAction;
-    }
+    }*/
 
 }
