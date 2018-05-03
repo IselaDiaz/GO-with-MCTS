@@ -47,14 +47,11 @@ public class BotState {
     private HashMap<String, Player> players;
     
     private Board board;
-    
-    //private Board previousBoard;
+
     
     public BotState() {
         this.board = new Board();
         this.players = new HashMap<>();
-        
-        //this.previousBoard=new Board();
     }
     
     public void setTimebank(int value) {
@@ -120,15 +117,6 @@ public class BotState {
     public void setBoard(Board board) {
     	this.board=board;
     }
-    
-    
-    /*public Board getPreviousBoard() {
-    	return this.previousBoard;
-    }
-    
-    public void setPreviousBoard(Board board) {
-    	this.previousBoard=board;
-    }*/
     
     public BotState clone() {
         BotState Clone = new BotState();

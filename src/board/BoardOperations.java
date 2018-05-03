@@ -23,33 +23,16 @@ public final class BoardOperations {
 
 	public BoardOperations() {}
 
-	/*public static String padRight(String s, int n) {
-		return String.format("%1$-" + n + "s", s);  
-	}*/
 
 	public static Boolean compareFields(String[][] b1, String[][] b2) {
 		for (int x = 0; x < b1.length; x++) {
 			for (int y = 0; y < b1[0].length; y++) {
 				String v1 = b1[x][y];
 				String v2 = b2[x][y];
-				//if (v1 < 0) v1 = 0;
-				//if (v2 < 0) v2 = 0;
 				if (!v1.equals(v2)) return false;
 			}
 		}
 		return true;
 	}
 
-	/*public static void dumpBoard(int[][] board, String label) {
-		System.out.print("\n\ndump '" + label + " ':\n");
-		for (int y = 0; y < board.length; y++) {
-			for (int x = 0; x < board[0].length; x++) {
-				System.out.print(board[x][y]);
-				if (x < board[0].length-1) {
-					System.out.print(", ");
-				}
-			}
-			System.out.print("\n");
-		}
-	}*/
 }

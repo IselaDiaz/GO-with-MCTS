@@ -19,8 +19,6 @@
 
 package processor;
 
-import MCTS.MCTS;
-
 import board.Board;
 import bot.BotState;
 import goMove.GoMove;
@@ -58,15 +56,11 @@ public class GoLogic {
     	Board board = state.getBoard();
     	int playerId=board.getMyId();
     	
-    	//MCTS.printing+=String.valueOf(playerId)+" ";
-    	
         Move point = move.getCoordinate();
 
         String[][] originalBoard = getBoardArray(board);
 
         board.setFieldAt(point, String.valueOf(playerId));
-        
-        //board.setLastPosition(point);
 
         int stonesTaken = checkCaptures(board, playerId);
         move.setStonesTaken(stonesTaken);
@@ -83,14 +77,6 @@ public class GoLogic {
                 clone[x][y] = board.field[x][y];
         return clone;
     }
-
-    /*private Boolean hasNeighbors(GoBoard board, Point p) {
-        if (p.x > 0 && !board.getFieldAt(new Point(p.x-1, p.y)).equals(GoBoard.EMPTY_FIELD)) return true;
-        if (p.x < board.getWidth() - 1 	&& !board.getFieldAt(new Point(p.x+1, p.y)).equals(GoBoard.EMPTY_FIELD)) return true;
-        if (p.y > 0 			&& !board.getFieldAt(new Point(p.x, p.y-1)).equals(GoBoard.EMPTY_FIELD)) return true;
-        if (p.y < board.getHeight() - 1   && !board.getFieldAt(new Point(p.x, p.y+1)).equals(GoBoard.EMPTY_FIELD)) return true;
-        return false;
-    }*/
 
     private int checkCaptures(Board board, int playerId) {
         int stonesTaken = 0;

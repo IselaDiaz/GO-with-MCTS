@@ -67,15 +67,11 @@ public class BotParser {
 				case "action":
 					if (parts[1].equals("move")) { /* move requested */
 						this.currentState.setTimebank(Integer.parseInt(parts[2]));
-						//System.out.println("before move");
 						Move move = this.bot.doMove(this.currentState);
-						//System.out.println("before if");
 						if (move != null) {
 							System.out.println(move.toString());
-							//System.out.println("not null");
 						} else {
 							System.out.println("pass");
-							//System.out.println("null");
 						}
 					}
 					break;
@@ -117,8 +113,6 @@ public class BotParser {
 					int opponentId = 2 - (myId + 1);
 					this.currentState.getBoard().setMyId(myId);
 					this.currentState.getBoard().setOpponentId(opponentId);
-					
-					//this.currentState.getBoard().
 					
 					break;
 				case "field_width":

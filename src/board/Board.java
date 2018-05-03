@@ -64,7 +64,7 @@ public class Board {
 
 	/**
 	 * Returns a list of all available moves. i.e. empty cells 
-	 * that will not result in a suicide move or violate the Ko rule
+	 * that will not result in a suicide move
 	 * @return : a list of all available moves in this game state
 	 */
 	public ArrayList<Move> getAvailableMoves() {
@@ -122,7 +122,6 @@ public class Board {
     	this.field=field;
     }
     
-    //public Board clone()
     public void setFieldAt(Move c, String f) {
         field[c.x][c.y] = f;
     }

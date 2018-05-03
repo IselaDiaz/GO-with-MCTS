@@ -19,10 +19,6 @@
 
 package processor;
 
-//import java.util.ArrayList;
-
-import MCTS.MCTS;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -31,7 +27,6 @@ import bot.BotState;
 import goMove.GoMove;
 import goMove.GoMoveDeserializer;
 import node.AINode;
-//import node.Node;
 import player.Player;
 
 /**
@@ -50,21 +45,10 @@ public class GoProcessor{
     }
 
     public AINode createNextStateFromMove(AINode stateNode, String input) {
-
-        /* Clone playerStates for next State */
-        //ArrayList<GoPlayerState> nextPlayerStates = clonePlayerStates(state.getPlayerStates());
-
-        //GoState nextState = new GoState(state, nextPlayerStates, roundNumber);
-        //nextState.setPlayerId(input.getPlayerId());
-
-        //GoPlayerState playerState = getActivePlayerState(nextPlayerStates, input.getPlayerId());
-        //playerState.setPlayerId(input.getPlayerId());
-
     	 // parse the response
         GoMoveDeserializer deserializer = new GoMoveDeserializer();
         GoMove move = deserializer.traverse(input);
-        //playerState.setMove(move);
-    	
+
     	//parent updated here and also changed stuff for new player
     	AINode nextStateNode=new AINode(stateNode.getState().clone(),stateNode,move);//parent updated here
     	
@@ -76,13 +60,6 @@ public class GoProcessor{
             //LOGGER.info(String.format("Unknown response: %s", input.getValue()));
         }
 
-        /* Determine double passes */
-
-        /* Set Ko */
-        /*if (logic.detectKo(stateNode) {
-            nextState.setKoPlayerId(input.getPlayerId());
-        }*/
-
         /* Update player stats */
         Set<String> playersString=nextState.getPlayers().keySet();
         int score;
@@ -90,20 +67,15 @@ public class GoProcessor{
         Iterator<String> iterator = playersString.iterator();
         while(iterator.hasNext()) {
         	Player player=nextState.getPlayers().get(iterator.next());
-        	score=logic.calculateScore(nextState.getBoard(), getIdFromPlayer(player,nextState));//add komi?
-        	//MCTS.printing+="Player"+String.valueOf(getIdFromPlayer(player,nextState))+" "+score+" ";
+        	score=logic.calculateScore(nextState.getBoard(), getIdFromPlayer(player,nextState));
         	player.setPoints(score);
         }
 
         //change rounds?
         updateRoundNumber(nextState);
-        //MCTS.printing+=String.valueOf(nextState.getRoundNumber())+" ";
         //alternating? more stuff to change
         nextStateNode.getState().changePlayer();
-        //MCTS.printing+=String.valueOf(nextState.getMyName());
-        //nextStateNode.setAvailableMoves();
         nextStateNode.setRemainingMoves();
-        //MCTS.printing+="I come out ";
         return nextStateNode;
     }
 
@@ -124,13 +96,9 @@ public class GoProcessor{
 
     public boolean hasGameEnded(AINode stateNode) {
     	BotState state=stateNode.getState();
-    	//MCTS.printing+=state.getRoundNumber()+" "+state.getMaxRounds();
-    	//System.out.println("Game ended?");
-        if (state.getRoundNumber() >= /*50*/state.getMaxRounds()) {
-        	//MCTS.printing+="TRUE ";
+        if (state.getRoundNumber() >= state.getMaxRounds()) {
         	return true;
         }
-        //MCTS.printing+=logic.isBoardFull(state.getBoard())+" "+logic.detectKo(stateNode);
         return logic.isBoardFull(state.getBoard()) || logic.detectKo(stateNode);
     }
 
@@ -141,32 +109,19 @@ public class GoProcessor{
         double scorePlayer1=0;
         Integer winnerId = Integer.MIN_VALUE;
 
-
-        //System.out.println("winID " +winnerId);
         Set<String> playersString=players.keySet();
         
         Iterator<String> iterator = playersString.iterator();
-        MCTS.a=0;
         while(iterator.hasNext()) {
-        	//MCTS.a++;
-            //System.out.println("in get winner id while loop " );
         	Player player=players.get(iterator.next());
-            //System.out.println("player  " +player);
         	int playerId=getIdFromPlayer(player,state);
-            //System.out.println("playerId" +playerId);
 			if(playerId==0) {
                 scorePlayer0 = player.getPoints();
-                //System.out.println("player 0 score " + scorePlayer0);
-                //MCTS.printing+="player 0 score " + scorePlayer0+" ";
             }
         	else {
                 scorePlayer1 = player.getPoints()+7.5;//komi
-                //System.out.println("player 1 score " + scorePlayer1);
-                MCTS.a++;
-                //MCTS.printing+="player 1 score " + scorePlayer1+" ";
             }
         }
-        //System.out.println("player 1 score " +scorePlayer1);
         if (scorePlayer0 > scorePlayer1) winnerId = 0;
         if (scorePlayer1 > scorePlayer0) winnerId = 1;
         

@@ -19,13 +19,7 @@
 
 package bot;
 
-//import java.util.ArrayList;
-//import java.util.Random;
-
 import move.Move;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 import MCTS.MCTS;
 import goMove.GoMove;
@@ -40,7 +34,6 @@ import goMove.GoMove;
 
 public class BotStarter {
 
-    private Random random = new Random();
     /**
      * Makes a turn. Edit this method to make your bot smarter.
      * Currently performs random, but legal moves.
@@ -48,29 +41,9 @@ public class BotStarter {
      * @return A Move object
      */
     public Move doMove(BotState state) {
-    	//if(state.getRoundNumber()>75)
-    	/*if(random.nextDouble()<=0.6)
-    	{*/
-    		MCTS decisionMaking = new MCTS(state);
-    		GoMove bestMove= decisionMaking.selectMove();
-    		return bestMove.getCoordinate();
-    	/*}
-    	else {
-    		ArrayList<Move> availableMoves = state.getBoard().getAvailableMoves();
-    		int moveCount = availableMoves.size();
-    	
-    		if (moveCount <= 0) {
-    			return null;
-    		}
-
-    		return availableMoves.get(this.random.nextInt(moveCount));
-    	}*/
-    	
-    	//System.out.println("domove");
-    	//return null;
-    	
-    	
-    	
+    	MCTS decisionMaking = new MCTS(state);
+    	GoMove bestMove= decisionMaking.selectMove();
+    	return bestMove.getCoordinate();
     }
 
  	public static void main(String[] args) {
