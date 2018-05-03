@@ -57,7 +57,7 @@ public class MCTS {
 				bestValue = uctValue;
 			}
 		}
-
+		System.err.println(selected);
 		return selected;
 	}
 	
