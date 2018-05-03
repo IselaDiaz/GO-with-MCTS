@@ -106,7 +106,7 @@ public class AINode {
 	}
 
     public void updateTotalScore(int winID) {
-        if (this.state.getBoard().getMyId() == winID)
+        if (this.state.getBoard().getMyId() != winID)
             totalScore++;
     }
 

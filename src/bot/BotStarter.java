@@ -49,12 +49,12 @@ public class BotStarter {
      */
     public Move doMove(BotState state) {
     	//if(state.getRoundNumber()>75)
-    	if(random.nextDouble()<=0.6)
-    	{
+    	/*if(random.nextDouble()<=0.6)
+    	{*/
     		MCTS decisionMaking = new MCTS(state);
     		GoMove bestMove= decisionMaking.selectMove();
     		return bestMove.getCoordinate();
-    	}
+    	/*}
     	else {
     		ArrayList<Move> availableMoves = state.getBoard().getAvailableMoves();
     		int moveCount = availableMoves.size();
@@ -64,7 +64,7 @@ public class BotStarter {
     		}
 
     		return availableMoves.get(this.random.nextInt(moveCount));
-    	}
+    	}*/
     	
     	//System.out.println("domove");
     	//return null;

@@ -124,7 +124,7 @@ public class GoLogic {
         return stonesTaken;
     }
 
-    private Boolean checkSuicideRule(Board board, Move p, String myPlayerId) {
+    public Boolean checkSuicideRule(Board board, Move p, String myPlayerId) {
         mFoundLiberties = 0;
         boolean[][] mark = new boolean[board.getWidth()][board.getHeight()];
         for (int tx = 0; tx < board.getWidth(); tx++) {

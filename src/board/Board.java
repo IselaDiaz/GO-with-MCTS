@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 //import bot.BotState;
 import move.Point;
+import processor.GoLogic;
 import move.Move;
 
 /**
@@ -42,6 +43,7 @@ public class Board {
     private int opponentId;
     private int height;
     private int width;
+    GoLogic logic=new GoLogic();
     
 	public String[][] field;
 
@@ -70,7 +72,7 @@ public class Board {
 	    
 	    for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
-                if (isEmptyPoint(x,y)) {
+                if (!logic.checkSuicideRule(this, new Move(x,y), String.valueOf(myId)) && isEmptyPoint(x,y)) {
                     moves.add(new Move(x, y));
                 }
             }

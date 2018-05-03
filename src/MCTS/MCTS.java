@@ -29,7 +29,7 @@ public class MCTS {
 		int maxRounds = currentBoardState.getMaxRounds();
 		int roundNumber = currentBoardState.getRoundNumber();
         //System.out.println("timebank " +timeBank);
-		double computationalTimePerMove = timeBank/(maxRounds-roundNumber+1);
+		double computationalTimePerMove = timeBank/(maxRounds-roundNumber);
         //System.out.println("comptime " +computationalTimePerMove);
 		long start = System.currentTimeMillis();
 		long startNano=System.nanoTime();
@@ -44,13 +44,14 @@ public class MCTS {
 		AINode rootNode = new AINode(currentBoardState, null, null);
 		//while (System.currentTimeMillis() < end)  {
 		//System.out.println(System.nanoTime()-endNano);
-		while (System.nanoTime()-endNano<500000) {
+		while (System.nanoTime()-endNano<-500000) {
 			//System.out.println(System.nanoTime()-endNano);
             //System.out.println("im in first while");
 			AINode currNode = rootNode;
 			//visited.add(currNode);
 
-            while (currNode.getRemainingMoves().size() == 0){
+            //while (currNode.getRemainingMoves().size() == 0){
+            while (currNode.getRemainingMoves().isEmpty()){
                 //System.out.println("im in second while ");
             	currNode = selectWithUCT(currNode);   //Selection with UCT
 			}
@@ -82,10 +83,12 @@ public class MCTS {
 		double epsilon = 1e-6;
 		Random r = new Random();
 		AINode selected = null;
-		double bestValue = Double.MIN_VALUE;
+		double bestValue = -1;
 		for (AINode child : currNode.getChildArray()) {
-			double uctValue = child.getTotalScore() / (child.getNumOfVisits()/* + epsilon*/) +
-					Math.sqrt(Math.log(child.getNumOfVisits()/*+1*/) / (child.getNumOfVisits()/* + epsilon*/)) ;
+			/*double uctValue = child.getTotalScore() / (child.getNumOfVisits()+ epsilon) +
+					Math.sqrt(Math.log(child.getNumOfVisits()+1) / (child.getNumOfVisits() + epsilon)) ;*/
+			double uctValue=child.getTotalScore()/child.getNumOfVisits()+
+					Math.sqrt(2*Math.log(currNode.getNumOfVisits())/child.getNumOfVisits());
 			// small random number to break ties randomly in unexpanded nodes
 			if (uctValue > bestValue) {
 				selected = child;
